@@ -1,18 +1,4 @@
-.eqv VGA 0xFF000000
-.eqv VGAend 0xFF012C00
-.eqv VGAw 320
-.eqv VGAh 240
-.eqv INV 0xc7
-
-.data
-	buffer1: .space 80000
-	buffer2: .space 80000
-	buffer3: .space 80000
-	file: .asciiz "img/arcade.bin"
-	sprite: .word 320 240
 .text
-	j main
-
 
 .macro fill_scr(%color)
 	add $a0, $zero, %color
@@ -78,6 +64,12 @@ _open_file:
 	print("\n")
 .end_macro
 
+.macro read_int(%reg)
+	li $v0, 5
+	syscall
+	move %reg, $v0
+.end_macro
+
 .macro print_image(%x,%y,%buffer,%sprite)
 	add $a0, $zero, %x
 	add $a1, $zero, %y
@@ -117,43 +109,15 @@ _print_image:
 		j for1b
 	for1e:
 	jr $ra
-main:
-	fill_scr(0x07)# Preenche a tela de vermelho
-	open_file($s0,file1)
-	read_file($s0,buffer1,80000)
-	close_file($s0)
-	open_file($s0,file2)
-	read_file($s0,buffer2,80000)
-	close_file($s0)
-	open_file($s0,file3)
-	read_file($s0,buffer3,80000)
-	close_file($s0)
 
-	li $s0, 0
-	main_loopb:
-		beq $s0, 0,img1
-		beq $s0, 1,img2
-		img3: print_image(0,0,buffer3,sprite3)
-			j afterprint
-		img2: print_image(0,0,buffer2,sprite2)
-			j afterprint
-		img1: print_image(0,0,buffer1,sprite1)
-		afterprint:
-		le_letra($s1)
-		beq $s1,KEY_W,inc
-		beq $s1,KEY_S,dec
-		beq $s1,KEY_ENTER,do
-		j main_loopb
-		inc:
-			beq $s0,3,main_loopb
-			addi $s0,$s0,1
-			j main_loopb
-		dec:
-			beq $s0,0,main_loopb
-			addi $s0,$s0,-1
-			j main_loopb
-		do:
-			beq $s0, 3, end
-			j main_loopb
-	j end
-end:
+.macro sleep(%time)
+	li $v0, 32
+	add $a0, $zero, %time
+	syscall
+.end_macro
+
+
+.macro sysc(%code)
+	add $v0, $zero, %code
+	syscall
+.end_macro

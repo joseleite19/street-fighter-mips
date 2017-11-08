@@ -64,12 +64,6 @@ _open_file:
 	print("\n")
 .end_macro
 
-.macro read_int(%reg)
-	li $v0, 5
-	syscall
-	move %reg, $v0
-.end_macro
-
 .macro print_image(%x,%y,%buffer,%sprite)
 	add $a0, $zero, %x
 	add $a1, $zero, %y
@@ -110,14 +104,67 @@ _print_image:
 	for1e:
 	jr $ra
 
+.macro print_rect(%x,%y,%w,%h,%color)
+	add $t0, $zero, %x
+	add $t1, $zero, %y
+	add $t2, $zero, %w
+	add $t3, $zero, %h
+	add $t4, $zero, %color
+	jal print_rect_
+.end_macro
+print_rect_:
+	la $t5, VGAw		#t5 = one line
+	la $t6, VGA			#t6 = base address
+	mul $t7, $t5, $t1	#t7 = y lines
+	add $t7, $t7, $t0	#t7 = x + (y lines)
+	add $t6, $t6, $t7	#t6 = vga[x][y]
+	move $t7, $t6		#t7 = vga[x][y]
+	mul $t8, $t5, $t3	#t8 = h lines
+	add $t8, $t6, $t8	#t8 = vga[x][y+h]
+	add $t9, $t6, $t2	#t9 = vga[x+w][y]
+	for1i:	beq $t7, $t9, for1o
+			sb $t4, 0($t7)
+			sb $t4, 0($t8)
+			add $t7, $t7, 1
+			add $t8, $t8, 1
+			j for1i
+	for1o:	nop
+	move $t8, $t6		#t8 = vga[x][y]
+						#t9 = vga[x+w][y]
+	mul $t7, $t5, $t3	#t7 = h lines
+	add $t7, $t7, $t6	#t7 = vga[x][y+h]
+
+	for2i:	beq $t8, $t7, for2o
+			sb $t4, 0($t8)
+			sb $t4, 0($t9)
+			add $t8, $t8, $t5
+			add $t9, $t9, $t5
+			j for2i
+	for2o:	nop
+
+	jr $ra
+
+.macro read_int(%reg)
+	li $v0, 5
+	syscall
+	move %reg, $v0
+.end_macro
+
 .macro sleep(%time)
 	li $v0, 32
 	add $a0, $zero, %time
 	syscall
 .end_macro
 
-
 .macro sysc(%code)
 	add $v0, $zero, %code
 	syscall
 .end_macro
+
+.macro mod(%dest, %op, %dv)
+	add $at, $zero, %op
+	add %dest, $zero, %dv
+	div $at, %dest
+	mfhi %dest
+.end_macro
+

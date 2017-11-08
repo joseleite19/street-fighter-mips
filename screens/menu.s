@@ -1,11 +1,19 @@
+.data
+	menu_img1: .asciiz "img/arcade.bin"
+	menu_img2: .asciiz "img/vs.bin"
+	menu_img3: .asciiz "img/quit.bin"
+	sprite: .word 320 240
+
+.text
+
 screen_menu: fill_scr(0x07)# Preenche a tela de vermelho
-	open_file($s0,file1)
+	open_file($s0,menu_img1)
 	read_file($s0,buffer1,80000)
 	close_file($s0)
-	open_file($s0,file2)
+	open_file($s0,menu_img2)
 	read_file($s0,buffer2,80000)
 	close_file($s0)
-	open_file($s0,file3)
+	open_file($s0,menu_img3)
 	read_file($s0,buffer3,80000)
 	close_file($s0)
 
@@ -25,9 +33,9 @@ screen_menu: fill_scr(0x07)# Preenche a tela de vermelho
 
 		afterprint:
 		read_int($s1)#le_letra($s1)
-		beq $s1,0,inc#beq $s1,KEY_W,inc
-		beq $s1,1,dec#beq $s1,KEY_S,dec
-		beq $s1,2,do #beq $s1,KEY_ENTER,do
+		beq $s1,1,inc#beq $s1,KEY_W,inc
+		beq $s1,2,dec#beq $s1,KEY_S,dec
+		beq $s1,3,do #beq $s1,KEY_ENTER,do
 		j afterprint #caso digitou outra coisa, ignora e le denovo
 
 		inc:#seta pra baixo
@@ -39,7 +47,7 @@ screen_menu: fill_scr(0x07)# Preenche a tela de vermelho
 			addi $s0,$s0,-1
 			j main_loopb
 		do:#enter
-			beq $s0, 0, screen_select
-			beq $s0, 1, screen_option
-			beq $s0, 2, screen_end#end game
+			beq $s0, 0, screen_select_ai
+			beq $s0, 1, screen_select_vs
+			beq $s0, 2, screen_end
 			j main_loopb

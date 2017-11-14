@@ -11,9 +11,8 @@
 	buffer2: .space 80000
 	buffer3: .space 80000
 
-	select_img1: .asciiz "img/select.bin"
-	select_p1: .asciiz "P1"
-	select_p2: .asciiz "P2"
+	p1: .asciiz "1P"
+	p2: .asciiz "2P"
 .text
 
 main:
@@ -24,4 +23,5 @@ main:
 .include "screens/menu.s"
 .include "screens/select_ai.s"
 .include "screens/select_versus.s"
+.include "screens/select_stage.s"
 .include "screens/end.s"

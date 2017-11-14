@@ -1,10 +1,12 @@
+.data
+	svs_bg: .asciiz "img/bin/select_vs.bin"
 .text
 
 screen_select_vs:
 
 	fill_scr(0x07)# Preenche a tela de vermelho
 
-	open_file($s0,select_img1)
+	open_file($s0,svs_bg)
 	read_file($s0,buffer1,80000)
 	close_file($s0)
 
@@ -40,14 +42,14 @@ screen_select_vs:
 				print_rect($s5,$s6,35,35,P2_COLOR)
 
 				li $v0, 104
-				la $a0, select_p1
+				la $a0, p1
 				add $a1, $s3, 10
 				add $a2, $s4, -3
 				li $a3, P1_COLOR
 
 				syscall
 
-				la $a0, select_p2
+				la $a0, p2
 				add $a1, $s5, 10
 				add $a2, $s6, 31
 				li $a3, P2_COLOR
@@ -82,8 +84,7 @@ screen_select_vs:
 					addi $s2,$s2,-1
 					j svs_fori
 				svs_do:#enter
-					nop
-					#do something
+					j select_stage
 
 				j svs_fori
 	svs_foro:	nop

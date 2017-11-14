@@ -1,7 +1,7 @@
 .data
-	menu_img1: .asciiz "img/arcade.bin"
-	menu_img2: .asciiz "img/vs.bin"
-	menu_img3: .asciiz "img/quit.bin"
+	menu_img1: .asciiz "img/bin/arcade.bin"
+	menu_img2: .asciiz "img/bin/vs.bin"
+	menu_img3: .asciiz "img/bin/quit.bin"
 	sprite: .word 320 240
 
 .text

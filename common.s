@@ -27,6 +27,11 @@ _fill_screen:
 	jal _open_file
 	add %store, $zero, $v0
 .end_macro
+.macro open_filer(%store,%file)
+	move $a0, %file
+	jal _open_file
+	add %store, $zero, $v0
+.end_macro
 _open_file:
 	li $a1,0
 	li $a2,0
@@ -57,11 +62,42 @@ _open_file:
 	syscall
 .end_macro
 
+.macro prints(%str,%x,%y,%color)
+.data
+	LABEL: .asciiz %str
+.text
+	la $a0, LABEL
+	add $a1, $zero, %x
+	add $a2, $zero, %y
+	add $a3, $zero, %color
+	li $v0, 104
+	syscall
+.end_macro
+
+.macro printsr(%str,%x,%y,%color)
+.text
+	add $a0, $zero, %str
+	add $a1, $zero, %x
+	add $a2, $zero, %y
+	add $a3, $zero, %color
+	li $v0, 104
+	syscall
+.end_macro
+
 .macro print_int(%int)
 	add $a0, $zero, %int
 	li $v0, 1
 	syscall
 	print("\n")
+.end_macro
+
+.macro prints_int(%int,%x,%y,%color)
+	add $a0, $zero, %int
+	add $a1, $zero, %x
+	add $a2, $zero, %y
+	add $a3, $zero, %color
+	li $v0, 101
+	syscall
 .end_macro
 
 .macro print_image(%x,%y,%buffer,%sprite)

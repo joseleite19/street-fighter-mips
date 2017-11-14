@@ -1,10 +1,12 @@
+.data
+	sai_bg: .asciiz "img/bin/select_ai.bin"
 .text
 
 screen_select_ai:
 
 	fill_scr(0x07)# Preenche a tela de vermelho
 
-	open_file($s0,select_img1)
+	open_file($s0,sai_bg)
 	read_file($s0,buffer1,80000)
 	close_file($s0)
 
@@ -23,7 +25,7 @@ screen_select_ai:
 
 
 				li $v0, 104
-				la $a0, select_p1
+				la $a0, p1
 				add $a1, $t3, 10
 				add $a2, $t4, -3
 				li $a3, P1_COLOR
@@ -49,8 +51,7 @@ screen_select_ai:
 					addi $s1,$s1,-1
 					j sai_fori
 				sai_do:#enter
-					nop
-					#do something
+					j select_stage
 
 				j sai_fori
 	sai_foro:	nop

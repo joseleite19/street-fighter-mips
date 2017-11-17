@@ -1,4 +1,22 @@
+.eqv VGA 0xFF000000
+.eqv VGAend 0xFF012C00
+.eqv VGAw 320
+.eqv VGAh 240
+
+.eqv INV 0xc7
+.eqv BLACK 0x00
+.eqv WHITE 0xff
+.eqv RED 0x07
+
+.data
+	screen_sz: .word 320 240
+
 .text
+
+.macro sysc(%code)
+	add $v0, $zero, %code
+	syscall
+.end_macro
 
 .macro fill_scr(%color)
 	add $a0, $zero, %color
@@ -35,22 +53,19 @@ _fill_screen:
 _open_file:
 	li $a1,0
 	li $a2,0
-	li $v0,13
-	syscall
+	sysc(13)
 	jr $ra
 
 .macro read_file(%address,%buffer,%mx_size)
 	add $a0,$zero,%address
 	la $a1, %buffer
 	add $a2,$zero,%mx_size
-	li $v0, 14
-	syscall
+	sysc(14)
 .end_macro
 
 .macro close_file(%address)
 	add $a0, $zero, %address
-	li $v0, 16
-	syscall
+	sysc(16)
 .end_macro
 
 .macro print(%str)
@@ -58,8 +73,7 @@ _open_file:
 	LABEL: .asciiz %str
 .text
 	la $a0, LABEL
-	li $v0, 4
-	syscall
+	sysc(4)
 .end_macro
 
 .macro prints(%str,%x,%y,%color)
@@ -70,8 +84,7 @@ _open_file:
 	add $a1, $zero, %x
 	add $a2, $zero, %y
 	add $a3, $zero, %color
-	li $v0, 104
-	syscall
+	sysc(104)
 .end_macro
 
 .macro printsr(%str,%x,%y,%color)
@@ -80,14 +93,12 @@ _open_file:
 	add $a1, $zero, %x
 	add $a2, $zero, %y
 	add $a3, $zero, %color
-	li $v0, 104
-	syscall
+	sysc(104)
 .end_macro
 
 .macro print_int(%int)
 	add $a0, $zero, %int
-	li $v0, 1
-	syscall
+	sysc(1)
 	print("\n")
 .end_macro
 
@@ -96,15 +107,14 @@ _open_file:
 	add $a1, $zero, %x
 	add $a2, $zero, %y
 	add $a3, $zero, %color
-	li $v0, 101
-	syscall
+	sysc(101)
 .end_macro
 
-.macro print_image(%x,%y,%buffer,%sprite)
+.macro print_image(%x,%y,%buffer,%size)
 	add $a0, $zero, %x
 	add $a1, $zero, %y
 	la $t0, %buffer
-	la $t9, %sprite
+	la $t9, %size
 	jal _print_image
 .end_macro
 _print_image:
@@ -181,20 +191,13 @@ print_rect_:
 	jr $ra
 
 .macro read_int(%reg)
-	li $v0, 5
-	syscall
+	sysc(5)
 	move %reg, $v0
 .end_macro
 
 .macro sleep(%time)
-	li $v0, 32
 	add $a0, $zero, %time
-	syscall
-.end_macro
-
-.macro sysc(%code)
-	add $v0, $zero, %code
-	syscall
+	sysc(32)
 .end_macro
 
 .macro mod(%dest, %op, %dv)

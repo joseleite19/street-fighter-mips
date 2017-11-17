@@ -1,8 +1,3 @@
-.eqv VGA 0xFF000000
-.eqv VGAend 0xFF012C00
-.eqv VGAw 320
-.eqv VGAh 240
-.eqv INV 0xc7
 .eqv P1_COLOR 0x07
 .eqv P2_COLOR 0xC0
 
@@ -18,8 +13,10 @@
 main:
 	j screen_menu
 
-
 .include "common.s"
+.include "player/player.s"
+.include "sprites/genSprites.s"
+.include "sprites/selSprites.s"
 .include "screens/menu.s"
 .include "screens/select_ai.s"
 .include "screens/select_versus.s"

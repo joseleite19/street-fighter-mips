@@ -24,18 +24,18 @@ screen_menu: fill_scr(RED)# Preenche a tela de vermelho
 		beq $s0, 2,img3#'quit' selectionado
 		j screen_end#erro
 
-		img1: print_image(0,0,buffer1,screen_sz)
+		img1:cpy_mem(buffer1,VGAsz,VGA)
 			j afterprint
-		img2: print_image(0,0,buffer2,screen_sz)
+		img2:cpy_mem(buffer2,VGAsz,VGA)
 			j afterprint
-		img3: print_image(0,0,buffer3,screen_sz)
+		img3:cpy_mem(buffer3,VGAsz,VGA)
 			j afterprint
 
 		afterprint:
-		read_int($s1)#le_letra($s1)
-		beq $s1,1,inc#beq $s1,KEY_W,inc
-		beq $s1,2,dec#beq $s1,KEY_S,dec
-		beq $s1,3,do #beq $s1,KEY_ENTER,do
+		read_wasd_enter($s1)#le_letra($s1)
+		beq $s1,1,dec#beq $s1,KEY_W,inc
+		beq $s1,2,inc#beq $s1,KEY_S,dec
+		beq $s1,0,do #beq $s1,KEY_ENTER,do
 		j afterprint #caso digitou outra coisa, ignora e le denovo
 
 		#seta pra baixo

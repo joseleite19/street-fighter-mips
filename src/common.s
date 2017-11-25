@@ -2,6 +2,10 @@
 .eqv VGAend 0xFF012C00
 .eqv VGAw 320
 .eqv VGAh 240
+.eqv VGAsz 76800#320 * 240
+
+.eqv KB_ADD1 0xFF100100
+.eqv KB_ADD2 0xFF100104
 
 .eqv INV 0xc7
 .eqv BLACK 0x00
@@ -10,12 +14,24 @@
 
 .data
 	screen_sz: .word 320 240
+	CHAR_W: .asciiz "W"
+	CHAR_A: .asciiz "A"
+	CHAR_S: .asciiz "S"
+	CHAR_D: .asciiz "D"
+	CHAR_ENTER: .asciiz "F"
 
 .text
 
 .macro sysc(%code)
 	add $v0, $zero, %code
 	syscall
+.end_macro
+
+.macro min(%reg1,%reg2)
+	add $v0, $zero, %reg2
+	blt %reg1, $v0, min_end
+	move %reg1, $v0
+	min_end: nop
 .end_macro
 
 .macro fill_scr(%color)
@@ -76,6 +92,12 @@ _open_file:
 	sysc(4)
 .end_macro
 
+.macro printr(%str)
+.text
+	add $a0, $zero, %str
+	sysc(4)
+.end_macro
+
 .macro prints(%str,%x,%y,%color)
 .data
 	LABEL: .asciiz %str
@@ -110,6 +132,12 @@ _open_file:
 	sysc(101)
 .end_macro
 
+.macro print_hex(%int)
+	add $a0, $zero, %int
+	sysc(34)
+	print("\n")
+.end_macro
+
 .macro print_image(%x,%y,%buffer,%size)
 	add $a0, $zero, %x
 	add $a1, $zero, %y
@@ -118,34 +146,38 @@ _open_file:
 	jal _print_image
 .end_macro
 _print_image:
-	lw $t1, 0($t9)#t1 = w
-	lw $t2, 4($t9)#t2 = h
-	move $t4, $zero#j = 0
-	for1b: beq $t4, $t2, for1e
-		move $t3, $zero#i = 0
-		for2b: beq $t3, $t1, for2e
-			lbu $t7, 0($t0)#t7 = pixel
+	la $t2, VGA			#t2 = VGA[0][0]
+	lw $t3, 0($t9)		#t3 = w
+	lw $t4, 4($t9)		#t4 = h
+	add $t3, $a0, $t3	#t3 = x + w
+	add $t4, $a1, $t4	#t4 = y + h
+	#min($t3,VGAw)
+	#min($t4,VGAh)
+	mul $t4, $t4, VGAw
 
-			beq $t7, INV, noprint
 
-			add $t5, $t3, $a0#t5 = i + x
-			add $t6, $t4, $a1#t6 = j + y
-			bgt $t5, VGAw, noprint#if t5 > w continue
-			bgt $t6, VGAh, noprint#if t6 > h continue
+						#t1 = iterador loop x
+	add $t3, $t3, $t2	#t3 = VGA[w][0]#fim loop x
 
-			la $t8, VGA
-			add $t5, $t5, $t8#t5 += VGA
-			mul $t6, $t6, VGAw#t6 *= w
-			add $t5, $t5, $t6#t5 += t6
-			sb $t7, 0($t5)
+	add $t2, $t2, $a0	#t2 = VGA[x][0]#iterador loop y
+	add $t4, $t4, $t2	#t4 = VGA[x][h]#fim loop y
+
+	for1b: beq $t2, $t4, for1e
+		move $t1, $t2#t1 = VGA[x][j]#iterador loop x
+		for2b: beq $t1, $t3, for2e
+			lbu $t5, 0($t0)#t5 = pixel
+
+			beq $t5, INV, noprint
+			sb $t5, 0($t1)
 
 			noprint:
+			addi $t1, $t1, 1
 			addi $t0, $t0, 1
-			addi $t3, $t3, 1
 
 			j for2b
 		for2e:
-		addi $t4, $t4, 1
+		addi $t2, $t2, VGAw#t2 = VGA[0][j+1]#iterador loop y
+		addi $t3, $t3, VGAw#t3 = VGA[w][j+1]#fim loop x
 		j for1b
 	for1e:
 	jr $ra
@@ -195,6 +227,45 @@ print_rect_:
 	move %reg, $v0
 .end_macro
 
+.macro read_char(%reg)
+	sysc(12)
+	move %reg, $v0
+.end_macro
+
+.macro read_wasd_enter(%reg)
+	read_char($a0)
+	jal read_wasd_enter_
+	move %reg,$v0
+.end_macro
+read_wasd_enter_:
+	la $a1, CHAR_W
+	lbu $a1, 0($a1)
+	beq $a0, $a1, read__w
+	la $a1, CHAR_A
+	lbu $a1, 0($a1)
+	beq $a0, $a1, read__a
+	la $a1, CHAR_S
+	lbu $a1, 0($a1)
+	beq $a0, $a1, read__s
+	la $a1, CHAR_D
+	lbu $a1, 0($a1)
+	beq $a0, $a1, read__d
+	la $a1, CHAR_ENTER
+	lbu $a1, 0($a1)
+	beq $a0, $a1, read__enter
+read__other:li $v0, -1
+			jr $ra
+read__w:	li $v0, 1
+			jr $ra
+read__s:	li $v0, 2
+			jr $ra
+read__a:	li $v0, 3
+			jr $ra
+read__d:	li $v0, 4
+			jr $ra
+read__enter:li $v0, 0
+			jr $ra
+
 .macro sleep(%time)
 	add $a0, $zero, %time
 	sysc(32)
@@ -206,4 +277,32 @@ print_rect_:
 	div $at, %dest
 	mfhi %dest
 .end_macro
+
+.macro cpy_mem(%orig, %size, %dest)
+	la $a0, %orig
+	la $a1, %dest
+	add $a2, $a0, %size
+	jal cpy_mem_
+.end_macro
+.macro cpy_memr(%orig, %size, %dest)
+	add $a0, $zero, %orig
+	add $a1, $zero, %dest
+	add $a2, $a0, %size
+	jal cpy_mem_
+.end_macro
+.macro cpy_mem_end(%orig, %dest, %end)
+	add $a0, $zero, %orig
+	add $a1, $zero, %dest
+	add $a2, $zero, %end
+	jal cpy_mem_
+.end_macro
+cpy_mem_:	lw $v0, 0($a0)
+			sw $v0, 0($a1)
+			add $a0, $a0, 4
+			add $a1, $a1, 4
+			beq $a2, $a0, jr_ra
+			beq $a2, $a1, jr_ra
+			j cpy_mem_
+jr_ra:		jr $ra
+
 

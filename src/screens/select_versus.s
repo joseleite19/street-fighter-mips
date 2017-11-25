@@ -12,7 +12,7 @@ screen_select_vs:
 
 	li $s1, 0#s1 = p1 selecao
 	li $s2, 4#s2 = p2 selecao
-	svs_fori:	print_image(0,0,buffer1,screen_sz)
+	svs_fori:	cpy_mem(buffer1,VGAsz,VGA)
 
 				mod($t3, $s1, 4)
 				mul $t3, $t3, 34
@@ -57,14 +57,13 @@ screen_select_vs:
 				syscall
 
 
-	svs_read:	read_int($t0)
+	svs_read:	read_wasd_enter($t0)
 
-				beq $t0,1,svs_inc1
-				beq $t0,2,svs_dec1
-				beq $t0,3,svs_inc2
-				beq $t0,4,svs_dec2
-				beq $t0,5,svs_do
-				beq $t0,0,screen_menu
+				beq $t0,1,svs_dec1#w
+				beq $t0,2,svs_inc1#s
+				beq $t0,3,svs_dec2#a
+				beq $t0,4,svs_inc2#d
+				beq $t0,0,svs_do#enter
 				j svs_read
 
 				#seta pra baixo
@@ -79,7 +78,7 @@ screen_select_vs:
 							j svs_fori
 				#seta pra baixo
 				svs_inc2:	addi $s2,$s2,1
-							bne $s2,7,svs_fori
+							bne $s2,8,svs_fori
 							li $s2, 0
 							j svs_fori
 				#seta pra cima
@@ -88,7 +87,7 @@ screen_select_vs:
 							li $s2, 7
 							j svs_fori
 				#enter
-				svs_do:		init_player_info($s1,$s2)
+				svs_do:		player_init_info($s1,$s2)
 
 							jal select_stage
 							# fill_scr(BLACK)
@@ -96,13 +95,13 @@ screen_select_vs:
 							prints_int($s2,10,20,P2_COLOR)
 							printsr($s3,10,30,WHITE)
 
-							select_sprites($s1,$s4)				#s4 = sprites_ryu
-							select_sprite($s4,ANIM_PUNCH,0,$s4)	#s4 = "../img/bin/spr_ryu_punch0.bin"
-							printsr($s4,10,40,P1_COLOR)
+							#select_sprites($s1,$s4)				#s4 = sprites_ryu
+							#select_sprite($s4,ANIM_PUNCH,0,$s4)	#s4 = "../img/bin/spr_ryu_punch0.bin"
+							#printsr($s4,10,40,P1_COLOR)
 
-							select_sprites($s2,$s5)				#s5 = sprites_ken
-							select_sprite($s5,ANIM_WALK,3,$s5)	#s5 = "../img/bin/spr_ken_walk3.bin"
-							printsr($s5,10,50,P2_COLOR)
+							#select_sprites($s2,$s5)				#s5 = sprites_ken
+							#select_sprite($s5,ANIM_WALK,3,$s5)	#s5 = "../img/bin/spr_ken_walk3.bin"
+							#printsr($s5,10,50,P2_COLOR)
 
 
 							sleep(10000)

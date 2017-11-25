@@ -14,13 +14,20 @@ chars = [
 ]
 
 sprites = [
-	("idle",2),
-	("walk",4),
+	("block",1),
 	("fjump",4),
+	("hit",1),
+	("idle",2),
+	("jkick",1),
+	("jpunch",1),
 	("jump",2),
-	("punch",2),
-	("kick",2),
+	("kick",1),
+	("ko",1),
+	("projectil",1),
+	("punch",1),
 	("special",2),
+	("victory",1),
+	("walking",4),
 ]
 
 for i in xrange(len(sprites)):

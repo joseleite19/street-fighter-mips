@@ -14,11 +14,12 @@ main:
 	j screen_menu
 
 .include "common.s"
-.include "player/player.s"
 .include "sprites/genSprites.s"
 .include "sprites/selSprites.s"
+.include "player/player.s"
 .include "screens/menu.s"
 .include "screens/select_ai.s"
 .include "screens/select_versus.s"
 .include "screens/select_stage.s"
 .include "screens/end.s"
+.include "game/game.s"

@@ -22,6 +22,7 @@ main:
 
 	for:	beq $s0, $s1, out
 		li $v0, 49
+		li $a0, $s0
 		syscall
 
 

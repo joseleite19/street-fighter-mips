@@ -5,54 +5,132 @@
 .eqv PLAYER_HP_MAX		8
 .eqv PLAYER_ANIM		10
 .eqv PLAYER_ANIM_FRAME	12
+.eqv PLAYER_SPD_VERT	14
 
-.eqv PLAYER_DATA_SPACE	16 #14
+.eqv PLAYER_DATA_SPACE	16
 
 .data
 	player1: .space PLAYER_DATA_SPACE
 	player2: .space PLAYER_DATA_SPACE
 
-.macro set_player_info(%player, %info, %val)
+.macro player_set_info(%player, %info, %val)
 	la $at, %player
 	add $v0, $zero, %val
 	sh $v0, %info($at)
 .end_macro
+.macro player_set_infor(%player, %info, %val)
+	add $v0, $zero, %val
+	sh $v0, %info(%player)
+.end_macro
 
-.macro get_player_info(%player, %info, %reg)
+.macro player_get_info(%player, %info, %reg)
 	la $at, %player
 	lh %reg, %info($at)
 .end_macro
+.macro player_get_infor(%player, %info, %reg)
+	lh %reg, %info(%player)
+.end_macro
 
-.macro init_player_info(%p1, %p2)
+.macro player_init_info(%p1, %p2)
 	add $a0, $zero, %p1
 	add $a1, $zero, %p2
-	jal init_player_info_
+	jal player_init_info_
 .end_macro
 .text
-	init_player_info_:
-		set_player_info(player1,PLAYER_CHAR,$a0)
-		set_player_info(player2,PLAYER_CHAR,$a1)
-		set_player_info(player1,PLAYER_X,10)
-		set_player_info(player2,PLAYER_X,310)
-		set_player_info(player1,PLAYER_Y,10)
-		set_player_info(player2,PLAYER_Y,10)
-		set_player_info(player1,PLAYER_HP,100)
-		set_player_info(player1,PLAYER_HP_MAX,100)
+	player_init_info_:
+		player_set_info(player1,PLAYER_CHAR,$a0)
+		player_set_info(player2,PLAYER_CHAR,$a1)
+		player_set_info(player1,PLAYER_X,10)
+		player_set_info(player2,PLAYER_X,310)
+		player_set_info(player1,PLAYER_Y,150)
+		player_set_info(player2,PLAYER_Y,150)
+		player_set_info(player1,PLAYER_HP,100)
+		player_set_info(player1,PLAYER_HP_MAX,100)
 		ble $a1, 7, normal_hp #7 is the last non boss
 	boss_hp:
 		sub $v0, $a1, 7
 		mul $v0, $v0, 25
 		add $v0, $v0, 100
-		set_player_info(player2,PLAYER_HP,$v0)
-		set_player_info(player2,PLAYER_HP_MAX,$v0)
+		player_set_info(player2,PLAYER_HP,$v0)
+		player_set_info(player2,PLAYER_HP_MAX,$v0)
 		j after_hp
 	normal_hp:
-		set_player_info(player2,PLAYER_HP,100)
-		set_player_info(player2,PLAYER_HP_MAX,100)
+		player_set_info(player2,PLAYER_HP,100)
+		player_set_info(player2,PLAYER_HP_MAX,100)
 		j after_hp
 	after_hp:
-		set_player_info(player1,PLAYER_ANIM,ANIM_IDLE)
-		set_player_info(player2,PLAYER_ANIM,ANIM_IDLE)
-		set_player_info(player1,PLAYER_ANIM_FRAME,0)
-		set_player_info(player2,PLAYER_ANIM_FRAME,0)
+		player_set_info(player1,PLAYER_ANIM,ANIM_IDLE)
+		player_set_info(player2,PLAYER_ANIM,ANIM_IDLE)
+		player_set_info(player1,PLAYER_ANIM_FRAME,0)
+		player_set_info(player2,PLAYER_ANIM_FRAME,1)
+		player_set_info(player1,PLAYER_SPD_VERT,0)
+		player_set_info(player2,PLAYER_SPD_VERT,0)
 		jr $ra
+
+
+.macro player_print(%player)
+	la $t0, %player
+	jal player_print_
+.end_macro
+.macro player_printr(%player)
+	add $t0, $zero, %player
+	jal player_print_
+.end_macro
+player_print_:sw $ra 0($sp)						#t0 = player1
+	player_get_infor($t0,PLAYER_CHAR,$t1)		#t1 = 0 #ryu
+	player_get_infor($t0,PLAYER_X,$t2)			#t2 = x
+	player_get_infor($t0,PLAYER_Y,$t3)			#t3 = y
+	player_get_infor($t0,PLAYER_HP,$t4)			#t4 = 100
+	player_get_infor($t0,PLAYER_ANIM,$t5)		#t5 = anim_iddle
+	player_get_infor($t0,PLAYER_ANIM_FRAME,$t6)	#t6 = frame_0
+
+	ble $t4, $zero, player_print_end
+
+	select_sprites($t1,$t7)						#t7 = sprites_ryu
+	select_sprite($t7,$t5,$t6,$t8)				#t8 = "../img/bin/sprites/ryu/iddle0.bin"
+
+	open_filer($t9,$t8)							#t9 = &file = open_file(t8)
+	read_file($t9,buffer1,80000)				#buffer1 = file
+	close_file($t9)
+
+
+	mod($a2,$t2,4)
+	sub $t2, $t2, $a2
+
+	la $a0, buffer1
+	la $a1, VGA
+	add $a1, $a1, $t2
+	mul $a2, $t3, VGAw
+	add $a1, $a1, $a2
+	la $a2, VGAend
+	#print("\n\naaa\n")
+	#print_hex($a0)
+	#print_hex($a1)
+	#print_hex($a2)
+	jal cpy_mem_
+	#print_image($t2,$t3,buffer1,screen_sz)
+player_print_end:lw $ra 0($sp)
+	jr $ra
+
+.macro player_nxt_frame(%player)
+	la $t0, %player
+	jal player_nxt_frame_
+.end_macro
+.macro player_nxt_framer(%player)
+	add $t0, $zero, %player
+	jal player_nxt_frame_
+.end_macro
+player_nxt_frame_:sw $ra 0($sp)					#t0 = player1
+	player_get_infor($t0,PLAYER_CHAR,$t1)		#t1 = 0 #ryu
+	player_get_infor($t0,PLAYER_ANIM,$t2)		#t2 = anim_iddle
+	player_get_infor($t0,PLAYER_ANIM_FRAME,$t3)	#t3 = frame_0
+
+	select_sprites($t1,$t4)						#t4 = sprites_ryu
+	select_sprite($t4,$t2,-1,$t5)				#t5 = ANIM_IDLE_LEN # 2
+
+	add $t3, $t3, 1								#t3++
+	bne $t3, $t5, player_nxt_frame_save			#t3 %= t5
+	li $t3, 0
+player_nxt_frame_save:player_set_infor($t0,PLAYER_ANIM_FRAME,$t3)
+	lw $ra 0($sp)
+	jr $ra

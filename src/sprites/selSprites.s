@@ -1,14 +1,17 @@
 .text
 
-.macro select_sprites(%char,%reg)
+.macro select_sprites(%char,%reg,%mirror)
 	add $a0, $zero, %char
+	add $a1, $zero, %mirror
 	jal select_sprites_
 	move %reg, $v0
 .end_macro
 select_sprites_:nop
 	la $v0, all_sprites
-	sll $a0, $a0, 2
+	sll $a0, $a0, 3
+	sll $a1, $a1, 2
 	add $v0, $v0, $a0
+	add $v0, $v0, $a1
 	lw $v0, 0($v0)
 	jr $ra
 .macro select_sprite(%char_spr,%anim_ind,%anim_frame,%reg)

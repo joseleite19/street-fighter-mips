@@ -40,10 +40,10 @@
 	player_init_info_:
 		player_set_info(player1,PLAYER_CHAR,$a0)
 		player_set_info(player2,PLAYER_CHAR,$a1)
-		player_set_info(player1,PLAYER_X,10)
-		player_set_info(player2,PLAYER_X,310)
-		player_set_info(player1,PLAYER_Y,150)
-		player_set_info(player2,PLAYER_Y,150)
+		player_set_info(player1,PLAYER_X,50)
+		player_set_info(player2,PLAYER_X,250)
+		player_set_info(player1,PLAYER_Y,130)
+		player_set_info(player2,PLAYER_Y,130)
 		player_set_info(player1,PLAYER_HP,100)
 		player_set_info(player1,PLAYER_HP_MAX,100)
 		ble $a1, 7, normal_hp #7 is the last non boss
@@ -68,12 +68,14 @@
 		jr $ra
 
 
-.macro player_print(%player)
-	la $t0, %player
+.macro player_print(%player,%mirror)
+	la  $t0, %player
+	add $t7, $zero, %mirror
 	jal player_print_
 .end_macro
-.macro player_printr(%player)
+.macro player_printr(%player,%mirror)
 	add $t0, $zero, %player
+	add $t7, $zero, %mirror
 	jal player_print_
 .end_macro
 player_print_:sw $ra 0($sp)						#t0 = player1
@@ -86,8 +88,8 @@ player_print_:sw $ra 0($sp)						#t0 = player1
 
 	ble $t4, $zero, player_print_end
 
-	select_sprites($t1,$t7)						#t7 = sprites_ryu
-	select_sprite($t7,$t5,$t6,$t8)				#t8 = "../img/bin/sprites/ryu/iddle0.bin"
+	select_sprites($t1,$t7,$t7)					#t7 = sprites_ryu1
+	select_sprite($t7,$t5,$t6,$t8)				#t8 = "../img/bin/sprites/ryu/iddle0_1.bin"
 
 	open_filer($t9,$t8)							#t9 = &file = open_file(t8)
 	read_file($t9,buffer1,80000)				#buffer1 = file
@@ -97,18 +99,27 @@ player_print_:sw $ra 0($sp)						#t0 = player1
 	mod($a2,$t2,4)
 	sub $t2, $t2, $a2
 
+
 	la $a0, buffer1
-	la $a1, VGA
-	add $a1, $a1, $t2
+
+	#lw $t8, 0($a0)#w, always 320
+	lw $t9, 4($a0)#h
+	add $a0, $a0, 8
+
+	la $a1, VGA		  #VGA[0][0]
+
+	add $a1, $a1, $t2 #VGA[x][0]
 	mul $a2, $t3, VGAw
-	add $a1, $a1, $a2
-	la $a2, VGAend
-	#print("\n\naaa\n")
-	#print_hex($a0)
-	#print_hex($a1)
-	#print_hex($a2)
-	jal cpy_mem_
-	#print_image($t2,$t3,buffer1,screen_sz)
+	add $a1, $a1, $a2 #VGA[x][y]
+
+	la $a2, VGAend	  #VGA[0][H] = vga last pos + 1
+
+	mul $t9, $t9, VGAw
+	add $t9, $t9, $a1 #VGA[0][h] = file last pos + 1
+
+	min($a2,$t9)
+
+	cpy_mem_end($a0,$a1,$a2)
 player_print_end:lw $ra 0($sp)
 	jr $ra
 
@@ -125,7 +136,7 @@ player_nxt_frame_:sw $ra 0($sp)					#t0 = player1
 	player_get_infor($t0,PLAYER_ANIM,$t2)		#t2 = anim_iddle
 	player_get_infor($t0,PLAYER_ANIM_FRAME,$t3)	#t3 = frame_0
 
-	select_sprites($t1,$t4)						#t4 = sprites_ryu
+	select_sprites($t1,$t4,0)					#t4 = sprites_ryu
 	select_sprite($t4,$t2,-1,$t5)				#t5 = ANIM_IDLE_LEN # 2
 
 	add $t3, $t3, 1								#t3++

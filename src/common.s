@@ -306,3 +306,7 @@ cpy_mem_:	lw $v0, 0($a0)
 jr_ra:		jr $ra
 
 
+.macro get_time(%reg)
+	sysc(30)
+	add %reg, $zero, $a0
+.end_macro

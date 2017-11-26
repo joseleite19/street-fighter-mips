@@ -88,21 +88,5 @@ screen_select_vs:
 							j svs_fori
 				#enter
 				svs_do:		player_init_info($s1,$s2)
-
 							jal select_stage
-							# fill_scr(BLACK)
-							prints_int($s1,10,10,P1_COLOR)
-							prints_int($s2,10,20,P2_COLOR)
-							printsr($s3,10,30,WHITE)
-
-							#select_sprites($s1,$s4)				#s4 = sprites_ryu
-							#select_sprite($s4,ANIM_PUNCH,0,$s4)	#s4 = "../img/bin/spr_ryu_punch0.bin"
-							#printsr($s4,10,40,P1_COLOR)
-
-							#select_sprites($s2,$s5)				#s5 = sprites_ken
-							#select_sprite($s5,ANIM_WALK,3,$s5)	#s5 = "../img/bin/spr_ken_walk3.bin"
-							#printsr($s5,10,50,P2_COLOR)
-
-
-							sleep(10000)
-							j svs_fori
+							j g_start

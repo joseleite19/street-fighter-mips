@@ -14,11 +14,11 @@
 
 .data
 	screen_sz: .word 320 240
-	CHAR_W: .asciiz "W"
-	CHAR_A: .asciiz "A"
-	CHAR_S: .asciiz "S"
-	CHAR_D: .asciiz "D"
-	CHAR_ENTER: .asciiz "F"
+	CHAR_W: .asciiz "w"
+	CHAR_A: .asciiz "a"
+	CHAR_S: .asciiz "s"
+	CHAR_D: .asciiz "d"
+	CHAR_ENTER: .asciiz "f"
 
 	.align 2
 	VGA: .space VGAsz
@@ -35,6 +35,13 @@
 	blt %reg1, $v0, min_end
 	move %reg1, $v0
 	min_end: nop
+.end_macro
+
+.macro max(%reg1,%reg2)
+	add $v0, $zero, %reg2
+	bgt %reg1, $v0, max_end
+	move %reg1, $v0
+	max_end: nop
 .end_macro
 
 .macro fill_scr(%color)
@@ -393,3 +400,61 @@ jr_ra:		jr $ra
 	add $a3, $zero, %volume
 	sysc(31)
 .end_macro
+
+.macro w_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lw %reg, 0($a0)
+.end_macro
+
+.macro w_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	sw %val, 0($a0)
+.end_macro
+
+.macro h_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lh %reg, 0($a0)
+.end_macro
+
+.macro hu_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lhu %reg, 0($a0)
+.end_macro
+
+.macro h_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	sh %val, 0($a0)
+.end_macro
+
+.macro b_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	lb %reg, 0($a0)
+.end_macro
+
+.macro bu_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	lbu %reg, 0($a0)
+.end_macro
+
+.macro b_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	sh %val, 0($a0)
+.end_macro
+

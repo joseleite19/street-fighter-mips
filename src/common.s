@@ -1,5 +1,5 @@
-.eqv VGA 0xFF000000
-.eqv VGAend 0xFF012C00
+.eqv _VGA 0xFF000000
+.eqv _VGAend 0xFF012C00
 .eqv VGAw 320
 .eqv VGAh 240
 .eqv VGAsz 76800#320 * 240
@@ -20,6 +20,9 @@
 	CHAR_D: .asciiz "D"
 	CHAR_ENTER: .asciiz "F"
 
+	.align 2
+	VGA: .space VGAsz
+	VGAend: .space 4
 .text
 
 .macro sysc(%code)
@@ -134,6 +137,12 @@ _open_file:
 
 .macro print_hex(%int)
 	add $a0, $zero, %int
+	sysc(34)
+	print("\n")
+.end_macro
+
+.macro print_hexa(%int)
+	la $a0, %int
 	sysc(34)
 	print("\n")
 .end_macro
@@ -291,6 +300,12 @@ read__enter:li $v0, 0
 	jal cpy_mem_
 .end_macro
 .macro cpy_mem_end(%orig, %dest, %end)
+	la $a0, %orig
+	la $a1, %dest
+	la $a2, %end
+	jal cpy_mem_
+.end_macro
+.macro cpy_mem_endr(%orig, %dest, %end)
 	add $a0, $zero, %orig
 	add $a1, $zero, %dest
 	add $a2, $zero, %end
@@ -303,10 +318,78 @@ cpy_mem_:	lw $v0, 0($a0)
 			beq $a2, $a0, jr_ra
 			beq $a2, $a1, jr_ra
 			j cpy_mem_
+cpy_mem_b_:	lbu $v0, 0($a0)
+			beq $v0, 0xc7 cpy_mem_bno
+			sb $v0, 0($a1)
+cpy_mem_bno:add $a0, $a0, 1
+			add $a1, $a1, 1
+			beq $a2, $a0, jr_ra
+			beq $a2, $a1, jr_ra
+			j cpy_mem_b_
 jr_ra:		jr $ra
 
 
 .macro get_time(%reg)
 	sysc(30)
 	add %reg, $zero, $a0
+.end_macro
+
+.macro vga_print_full(%orig, %x, %y)
+
+	add $v0, $zero, %y
+	mul $v0, $v0, VGAw
+	add $v0, $v0, %x	#[x][y]
+
+	la $a0, %orig		#orig[0][0]
+	la $a1, VGA			#VGA[0][0]
+	add $a1, $a1, $v0	#VGA[x][y]
+	la $a2, VGAend		#VGAend
+
+	jal cpy_mem_
+.end_macro
+
+.macro vga_print(%orig, %x, %y)
+
+	add $v0, $zero, %y
+	mul $v0, $v0, VGAw
+	add $v0, $v0, %x	#[x][y]
+
+	la $a0, %orig		#orig[0][0]
+	la $a1, VGA			#VGA[0][0]
+	add $a1, $a1, $v0	#VGA[x][y]
+	la $a2, VGAend		#VGAend
+
+	jal cpy_mem_b_
+.end_macro
+
+.macro vga_print_h(%orig, %x, %y, %h)
+
+	add $v0, $zero, %y
+	mul $v0, $v0, VGAw
+	add $v0, $v0, %x		#[x][y]
+
+	add $a0, $zero, %orig	#orig[0][0]
+	la $a1, VGA				#VGA[0][0]
+	add $a1, $a1, $v0		#VGA[x][y]
+	la $a2, VGAend			#VGAend
+
+	add $v0, $zero, %h
+	mul $v0, $v0, VGAw
+	add $v0, $v0, $a1	#VGA[x][y+h]
+
+	min($a2,$v0)
+
+	jal cpy_mem_b_
+.end_macro
+
+.macro vga_refresh()
+	cpy_mem(VGA,VGAsz,_VGA)
+.end_macro
+
+.macro midi(%pitch, %duration, %instrument, %volume)
+	add $a0, $zero, %pitch
+	add $a1, $zero, %duration
+	add $a2, $zero, %instrument
+	add $a3, $zero, %volume
+	sysc(31)
 .end_macro

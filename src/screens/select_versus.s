@@ -12,7 +12,7 @@ screen_select_vs:
 
 	li $s1, 0#s1 = p1 selecao
 	li $s2, 4#s2 = p2 selecao
-	svs_fori:	cpy_mem(buffer1,VGAsz,VGA)
+	svs_fori:	vga_print_full(buffer1,0,0)
 
 				mod($t3, $s1, 4)
 				mul $t3, $t3, 34
@@ -40,6 +40,8 @@ screen_select_vs:
 
 				print_rect($s3,$s4,35,35,P1_COLOR)
 				print_rect($s5,$s6,35,35,P2_COLOR)
+
+				vga_refresh()
 
 				li $v0, 104
 				la $a0, p1

@@ -14,6 +14,7 @@ main:
 	j screen_menu
 
 .include "common.s"
+.include "music/music.s"
 .include "sprites/genSprites.s"
 .include "sprites/selSprites.s"
 .include "player/player.s"

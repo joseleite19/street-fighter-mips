@@ -17,6 +17,11 @@ screen_menu: fill_scr(RED)# Preenche a tela de vermelho
 	read_file($s0,buffer3,80000)
 	close_file($s0)
 
+	print_hexa(VGA)
+	print_hexa(VGAend)
+	print_hexa(_VGA)
+	print_hexa(_VGAend)
+
 	li $s0, 0
 	main_loopb:
 		beq $s0, 0,img1#'start' selecionado
@@ -24,14 +29,17 @@ screen_menu: fill_scr(RED)# Preenche a tela de vermelho
 		beq $s0, 2,img3#'quit' selectionado
 		j screen_end#erro
 
-		img1:cpy_mem(buffer1,VGAsz,VGA)
+
+		img1:vga_print_full(buffer1,0,0)
 			j afterprint
-		img2:cpy_mem(buffer2,VGAsz,VGA)
+		img2:vga_print_full(buffer2,0,0)
 			j afterprint
-		img3:cpy_mem(buffer3,VGAsz,VGA)
+		img3:vga_print_full(buffer3,0,0)
 			j afterprint
 
-		afterprint:
+
+		afterprint:vga_refresh()
+
 		read_wasd_enter($s1)#le_letra($s1)
 		beq $s1,1,dec#beq $s1,KEY_W,inc
 		beq $s1,2,inc#beq $s1,KEY_S,dec

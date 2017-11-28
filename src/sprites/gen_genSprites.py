@@ -89,7 +89,7 @@ for char in chars:
 			#ryu1_punch:
 			print "\t\t\t#%s" % cur_sprite[4:]
 
-			if sprite != sprites[0]: cur_char += ", "
+			if sprite[0] != sprites[0][0]: cur_char += ", "
 			cur_char += cur_sprite
 
 			if sprite[1] == 0:

@@ -42,8 +42,8 @@
 		player_set_info(player2,PLAYER_CHAR,$a1)
 		player_set_info(player1,PLAYER_X,50)
 		player_set_info(player2,PLAYER_X,250)
-		player_set_info(player1,PLAYER_Y,130)
-		player_set_info(player2,PLAYER_Y,130)
+		player_set_info(player1,PLAYER_Y,210)
+		player_set_info(player2,PLAYER_Y,210)
 		player_set_info(player1,PLAYER_HP,100)
 		player_set_info(player1,PLAYER_HP_MAX,100)
 		ble $a1, 7, normal_hp #7 is the last non boss
@@ -60,7 +60,7 @@
 		j after_hp
 	after_hp:
 		player_set_info(player1,PLAYER_ANIM,ANIM_IDLE)
-		player_set_info(player2,PLAYER_ANIM,ANIM_IDLE)
+		player_set_info(player2,PLAYER_ANIM,ANIM_POWER)
 		player_set_info(player1,PLAYER_ANIM_FRAME,0)
 		player_set_info(player2,PLAYER_ANIM_FRAME,1)
 		player_set_info(player1,PLAYER_SPD_VERT,0)
@@ -106,20 +106,9 @@ player_print_:sw $ra 0($sp)						#t0 = player1
 	lw $t9, 4($a0)#h
 	add $a0, $a0, 8
 
-	la $a1, VGA		  #VGA[0][0]
+	sub $t3, $t3, $t9
 
-	add $a1, $a1, $t2 #VGA[x][0]
-	mul $a2, $t3, VGAw
-	add $a1, $a1, $a2 #VGA[x][y]
-
-	la $a2, VGAend	  #VGA[0][H] = vga last pos + 1
-
-	mul $t9, $t9, VGAw
-	add $t9, $t9, $a1 #VGA[0][h] = file last pos + 1
-
-	min($a2,$t9)
-
-	cpy_mem_end($a0,$a1,$a2)
+	vga_print_h($a0, $t2, $t3, $t9)
 player_print_end:lw $ra 0($sp)
 	jr $ra
 

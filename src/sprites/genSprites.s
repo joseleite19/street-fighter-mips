@@ -81,7 +81,7 @@
 				spr_ryu1_walking2: .asciiz "../img/bin/sprites/ryu/walking2_1.bin"
 				spr_ryu1_walking3: .asciiz "../img/bin/sprites/ryu/walking3_1.bin"
 			spr_ryu1_walking: .word 4, spr_ryu1_walking0, spr_ryu1_walking1, spr_ryu1_walking2, spr_ryu1_walking3
-		sprites_ryu1: .word , spr_ryu1_block, spr_ryu1_fjump, spr_ryu1_hit, spr_ryu1_idle, spr_ryu1_jkick, spr_ryu1_jpunch, spr_ryu1_jump, spr_ryu1_ko, spr_ryu1_power, spr_ryu1_projectile, spr_ryu1_skick, spr_ryu1_spunch, spr_ryu1_victory, spr_ryu1_walking
+		sprites_ryu1: .word spr_ryu1_block, spr_ryu1_fjump, spr_ryu1_hit, spr_ryu1_idle, spr_ryu1_jkick, spr_ryu1_jpunch, spr_ryu1_jump, spr_ryu1_ko, spr_ryu1_power, spr_ryu1_projectile, spr_ryu1_skick, spr_ryu1_spunch, spr_ryu1_victory, spr_ryu1_walking
 		#ryu2:
 			#ryu2_block
 				spr_ryu2_block0: .asciiz "../img/bin/sprites/ryu/block_2.bin"
@@ -134,7 +134,7 @@
 				spr_ryu2_walking2: .asciiz "../img/bin/sprites/ryu/walking2_2.bin"
 				spr_ryu2_walking3: .asciiz "../img/bin/sprites/ryu/walking3_2.bin"
 			spr_ryu2_walking: .word 4, spr_ryu2_walking0, spr_ryu2_walking1, spr_ryu2_walking2, spr_ryu2_walking3
-		sprites_ryu2: .word , spr_ryu2_block, spr_ryu2_fjump, spr_ryu2_hit, spr_ryu2_idle, spr_ryu2_jkick, spr_ryu2_jpunch, spr_ryu2_jump, spr_ryu2_ko, spr_ryu2_power, spr_ryu2_projectile, spr_ryu2_skick, spr_ryu2_spunch, spr_ryu2_victory, spr_ryu2_walking
+		sprites_ryu2: .word spr_ryu2_block, spr_ryu2_fjump, spr_ryu2_hit, spr_ryu2_idle, spr_ryu2_jkick, spr_ryu2_jpunch, spr_ryu2_jump, spr_ryu2_ko, spr_ryu2_power, spr_ryu2_projectile, spr_ryu2_skick, spr_ryu2_spunch, spr_ryu2_victory, spr_ryu2_walking
 		#honda1:
 			#honda1_block
 				spr_honda1_block0: .asciiz "../img/bin/sprites/honda/block_1.bin"
@@ -183,7 +183,7 @@
 				spr_honda1_walking0: .asciiz "../img/bin/sprites/honda/walking0_1.bin"
 				spr_honda1_walking1: .asciiz "../img/bin/sprites/honda/walking1_1.bin"
 			spr_honda1_walking: .word 2, spr_honda1_walking0, spr_honda1_walking1
-		sprites_honda1: .word , spr_honda1_block, spr_honda1_fjump, spr_honda1_hit, spr_honda1_idle, spr_honda1_jkick, spr_honda1_jpunch, spr_honda1_jump, spr_honda1_ko, spr_honda1_power, spr_honda1_projectile, spr_honda1_skick, spr_honda1_spunch, spr_honda1_victory, spr_honda1_walking
+		sprites_honda1: .word spr_honda1_block, spr_honda1_fjump, spr_honda1_hit, spr_honda1_idle, spr_honda1_jkick, spr_honda1_jpunch, spr_honda1_jump, spr_honda1_ko, spr_honda1_power, spr_honda1_projectile, spr_honda1_skick, spr_honda1_spunch, spr_honda1_victory, spr_honda1_walking
 		#honda2:
 			#honda2_block
 				spr_honda2_block0: .asciiz "../img/bin/sprites/honda/block_2.bin"
@@ -232,7 +232,7 @@
 				spr_honda2_walking0: .asciiz "../img/bin/sprites/honda/walking0_2.bin"
 				spr_honda2_walking1: .asciiz "../img/bin/sprites/honda/walking1_2.bin"
 			spr_honda2_walking: .word 2, spr_honda2_walking0, spr_honda2_walking1
-		sprites_honda2: .word , spr_honda2_block, spr_honda2_fjump, spr_honda2_hit, spr_honda2_idle, spr_honda2_jkick, spr_honda2_jpunch, spr_honda2_jump, spr_honda2_ko, spr_honda2_power, spr_honda2_projectile, spr_honda2_skick, spr_honda2_spunch, spr_honda2_victory, spr_honda2_walking
+		sprites_honda2: .word spr_honda2_block, spr_honda2_fjump, spr_honda2_hit, spr_honda2_idle, spr_honda2_jkick, spr_honda2_jpunch, spr_honda2_jump, spr_honda2_ko, spr_honda2_power, spr_honda2_projectile, spr_honda2_skick, spr_honda2_spunch, spr_honda2_victory, spr_honda2_walking
 		#blanka1:
 			#blanka1_block
 				spr_blanka1_block0: .asciiz "../img/bin/sprites/blanka/block_1.bin"
@@ -279,7 +279,7 @@
 				spr_blanka1_walking1: .asciiz "../img/bin/sprites/blanka/walking1_1.bin"
 				spr_blanka1_walking2: .asciiz "../img/bin/sprites/blanka/walking2_1.bin"
 			spr_blanka1_walking: .word 3, spr_blanka1_walking0, spr_blanka1_walking1, spr_blanka1_walking2
-		sprites_blanka1: .word , spr_blanka1_block, spr_blanka1_fjump, spr_blanka1_hit, spr_blanka1_idle, spr_blanka1_jkick, spr_blanka1_jpunch, spr_blanka1_jump, spr_blanka1_ko, spr_blanka1_power, spr_blanka1_projectile, spr_blanka1_skick, spr_blanka1_spunch, spr_blanka1_victory, spr_blanka1_walking
+		sprites_blanka1: .word spr_blanka1_block, spr_blanka1_fjump, spr_blanka1_hit, spr_blanka1_idle, spr_blanka1_jkick, spr_blanka1_jpunch, spr_blanka1_jump, spr_blanka1_ko, spr_blanka1_power, spr_blanka1_projectile, spr_blanka1_skick, spr_blanka1_spunch, spr_blanka1_victory, spr_blanka1_walking
 		#blanka2:
 			#blanka2_block
 				spr_blanka2_block0: .asciiz "../img/bin/sprites/blanka/block_2.bin"
@@ -326,7 +326,7 @@
 				spr_blanka2_walking1: .asciiz "../img/bin/sprites/blanka/walking1_2.bin"
 				spr_blanka2_walking2: .asciiz "../img/bin/sprites/blanka/walking2_2.bin"
 			spr_blanka2_walking: .word 3, spr_blanka2_walking0, spr_blanka2_walking1, spr_blanka2_walking2
-		sprites_blanka2: .word , spr_blanka2_block, spr_blanka2_fjump, spr_blanka2_hit, spr_blanka2_idle, spr_blanka2_jkick, spr_blanka2_jpunch, spr_blanka2_jump, spr_blanka2_ko, spr_blanka2_power, spr_blanka2_projectile, spr_blanka2_skick, spr_blanka2_spunch, spr_blanka2_victory, spr_blanka2_walking
+		sprites_blanka2: .word spr_blanka2_block, spr_blanka2_fjump, spr_blanka2_hit, spr_blanka2_idle, spr_blanka2_jkick, spr_blanka2_jpunch, spr_blanka2_jump, spr_blanka2_ko, spr_blanka2_power, spr_blanka2_projectile, spr_blanka2_skick, spr_blanka2_spunch, spr_blanka2_victory, spr_blanka2_walking
 		#guile1:
 			#guile1_block
 				spr_guile1_block0: .asciiz "../img/bin/sprites/guile/block_1.bin"
@@ -381,7 +381,7 @@
 				spr_guile1_walking2: .asciiz "../img/bin/sprites/guile/walking2_1.bin"
 				spr_guile1_walking3: .asciiz "../img/bin/sprites/guile/walking3_1.bin"
 			spr_guile1_walking: .word 4, spr_guile1_walking0, spr_guile1_walking1, spr_guile1_walking2, spr_guile1_walking3
-		sprites_guile1: .word , spr_guile1_block, spr_guile1_fjump, spr_guile1_hit, spr_guile1_idle, spr_guile1_jkick, spr_guile1_jpunch, spr_guile1_jump, spr_guile1_ko, spr_guile1_power, spr_guile1_projectile, spr_guile1_skick, spr_guile1_spunch, spr_guile1_victory, spr_guile1_walking
+		sprites_guile1: .word spr_guile1_block, spr_guile1_fjump, spr_guile1_hit, spr_guile1_idle, spr_guile1_jkick, spr_guile1_jpunch, spr_guile1_jump, spr_guile1_ko, spr_guile1_power, spr_guile1_projectile, spr_guile1_skick, spr_guile1_spunch, spr_guile1_victory, spr_guile1_walking
 		#guile2:
 			#guile2_block
 				spr_guile2_block0: .asciiz "../img/bin/sprites/guile/block_2.bin"
@@ -436,7 +436,7 @@
 				spr_guile2_walking2: .asciiz "../img/bin/sprites/guile/walking2_2.bin"
 				spr_guile2_walking3: .asciiz "../img/bin/sprites/guile/walking3_2.bin"
 			spr_guile2_walking: .word 4, spr_guile2_walking0, spr_guile2_walking1, spr_guile2_walking2, spr_guile2_walking3
-		sprites_guile2: .word , spr_guile2_block, spr_guile2_fjump, spr_guile2_hit, spr_guile2_idle, spr_guile2_jkick, spr_guile2_jpunch, spr_guile2_jump, spr_guile2_ko, spr_guile2_power, spr_guile2_projectile, spr_guile2_skick, spr_guile2_spunch, spr_guile2_victory, spr_guile2_walking
+		sprites_guile2: .word spr_guile2_block, spr_guile2_fjump, spr_guile2_hit, spr_guile2_idle, spr_guile2_jkick, spr_guile2_jpunch, spr_guile2_jump, spr_guile2_ko, spr_guile2_power, spr_guile2_projectile, spr_guile2_skick, spr_guile2_spunch, spr_guile2_victory, spr_guile2_walking
 		#ken1:
 			#ken1_block
 				spr_ken1_block0: .asciiz "../img/bin/sprites/ken/block_1.bin"
@@ -490,7 +490,7 @@
 				spr_ken1_walking2: .asciiz "../img/bin/sprites/ken/walking2_1.bin"
 				spr_ken1_walking3: .asciiz "../img/bin/sprites/ken/walking3_1.bin"
 			spr_ken1_walking: .word 4, spr_ken1_walking0, spr_ken1_walking1, spr_ken1_walking2, spr_ken1_walking3
-		sprites_ken1: .word , spr_ken1_block, spr_ken1_fjump, spr_ken1_hit, spr_ken1_idle, spr_ken1_jkick, spr_ken1_jpunch, spr_ken1_jump, spr_ken1_ko, spr_ken1_power, spr_ken1_projectile, spr_ken1_skick, spr_ken1_spunch, spr_ken1_victory, spr_ken1_walking
+		sprites_ken1: .word spr_ken1_block, spr_ken1_fjump, spr_ken1_hit, spr_ken1_idle, spr_ken1_jkick, spr_ken1_jpunch, spr_ken1_jump, spr_ken1_ko, spr_ken1_power, spr_ken1_projectile, spr_ken1_skick, spr_ken1_spunch, spr_ken1_victory, spr_ken1_walking
 		#ken2:
 			#ken2_block
 				spr_ken2_block0: .asciiz "../img/bin/sprites/ken/block_2.bin"
@@ -544,7 +544,7 @@
 				spr_ken2_walking2: .asciiz "../img/bin/sprites/ken/walking2_2.bin"
 				spr_ken2_walking3: .asciiz "../img/bin/sprites/ken/walking3_2.bin"
 			spr_ken2_walking: .word 4, spr_ken2_walking0, spr_ken2_walking1, spr_ken2_walking2, spr_ken2_walking3
-		sprites_ken2: .word , spr_ken2_block, spr_ken2_fjump, spr_ken2_hit, spr_ken2_idle, spr_ken2_jkick, spr_ken2_jpunch, spr_ken2_jump, spr_ken2_ko, spr_ken2_power, spr_ken2_projectile, spr_ken2_skick, spr_ken2_spunch, spr_ken2_victory, spr_ken2_walking
+		sprites_ken2: .word spr_ken2_block, spr_ken2_fjump, spr_ken2_hit, spr_ken2_idle, spr_ken2_jkick, spr_ken2_jpunch, spr_ken2_jump, spr_ken2_ko, spr_ken2_power, spr_ken2_projectile, spr_ken2_skick, spr_ken2_spunch, spr_ken2_victory, spr_ken2_walking
 		#chunli1:
 			#chunli1_block
 				spr_chunli1_block0: .asciiz "../img/bin/sprites/chunli/block_1.bin"
@@ -596,7 +596,7 @@
 				spr_chunli1_walking2: .asciiz "../img/bin/sprites/chunli/walking2_1.bin"
 				spr_chunli1_walking3: .asciiz "../img/bin/sprites/chunli/walking3_1.bin"
 			spr_chunli1_walking: .word 4, spr_chunli1_walking0, spr_chunli1_walking1, spr_chunli1_walking2, spr_chunli1_walking3
-		sprites_chunli1: .word , spr_chunli1_block, spr_chunli1_fjump, spr_chunli1_hit, spr_chunli1_idle, spr_chunli1_jkick, spr_chunli1_jpunch, spr_chunli1_jump, spr_chunli1_ko, spr_chunli1_power, spr_chunli1_projectile, spr_chunli1_skick, spr_chunli1_spunch, spr_chunli1_victory, spr_chunli1_walking
+		sprites_chunli1: .word spr_chunli1_block, spr_chunli1_fjump, spr_chunli1_hit, spr_chunli1_idle, spr_chunli1_jkick, spr_chunli1_jpunch, spr_chunli1_jump, spr_chunli1_ko, spr_chunli1_power, spr_chunli1_projectile, spr_chunli1_skick, spr_chunli1_spunch, spr_chunli1_victory, spr_chunli1_walking
 		#chunli2:
 			#chunli2_block
 				spr_chunli2_block0: .asciiz "../img/bin/sprites/chunli/block_2.bin"
@@ -648,7 +648,7 @@
 				spr_chunli2_walking2: .asciiz "../img/bin/sprites/chunli/walking2_2.bin"
 				spr_chunli2_walking3: .asciiz "../img/bin/sprites/chunli/walking3_2.bin"
 			spr_chunli2_walking: .word 4, spr_chunli2_walking0, spr_chunli2_walking1, spr_chunli2_walking2, spr_chunli2_walking3
-		sprites_chunli2: .word , spr_chunli2_block, spr_chunli2_fjump, spr_chunli2_hit, spr_chunli2_idle, spr_chunli2_jkick, spr_chunli2_jpunch, spr_chunli2_jump, spr_chunli2_ko, spr_chunli2_power, spr_chunli2_projectile, spr_chunli2_skick, spr_chunli2_spunch, spr_chunli2_victory, spr_chunli2_walking
+		sprites_chunli2: .word spr_chunli2_block, spr_chunli2_fjump, spr_chunli2_hit, spr_chunli2_idle, spr_chunli2_jkick, spr_chunli2_jpunch, spr_chunli2_jump, spr_chunli2_ko, spr_chunli2_power, spr_chunli2_projectile, spr_chunli2_skick, spr_chunli2_spunch, spr_chunli2_victory, spr_chunli2_walking
 		#zangief1:
 			#zangief1_block
 				spr_zangief1_block0: .asciiz "../img/bin/sprites/zangief/block_1.bin"
@@ -698,7 +698,7 @@
 				spr_zangief1_walking2: .asciiz "../img/bin/sprites/zangief/walking2_1.bin"
 				spr_zangief1_walking3: .asciiz "../img/bin/sprites/zangief/walking3_1.bin"
 			spr_zangief1_walking: .word 4, spr_zangief1_walking0, spr_zangief1_walking1, spr_zangief1_walking2, spr_zangief1_walking3
-		sprites_zangief1: .word , spr_zangief1_block, spr_zangief1_fjump, spr_zangief1_hit, spr_zangief1_idle, spr_zangief1_jkick, spr_zangief1_jpunch, spr_zangief1_jump, spr_zangief1_ko, spr_zangief1_power, spr_zangief1_projectile, spr_zangief1_skick, spr_zangief1_spunch, spr_zangief1_victory, spr_zangief1_walking
+		sprites_zangief1: .word spr_zangief1_block, spr_zangief1_fjump, spr_zangief1_hit, spr_zangief1_idle, spr_zangief1_jkick, spr_zangief1_jpunch, spr_zangief1_jump, spr_zangief1_ko, spr_zangief1_power, spr_zangief1_projectile, spr_zangief1_skick, spr_zangief1_spunch, spr_zangief1_victory, spr_zangief1_walking
 		#zangief2:
 			#zangief2_block
 				spr_zangief2_block0: .asciiz "../img/bin/sprites/zangief/block_2.bin"
@@ -748,7 +748,7 @@
 				spr_zangief2_walking2: .asciiz "../img/bin/sprites/zangief/walking2_2.bin"
 				spr_zangief2_walking3: .asciiz "../img/bin/sprites/zangief/walking3_2.bin"
 			spr_zangief2_walking: .word 4, spr_zangief2_walking0, spr_zangief2_walking1, spr_zangief2_walking2, spr_zangief2_walking3
-		sprites_zangief2: .word , spr_zangief2_block, spr_zangief2_fjump, spr_zangief2_hit, spr_zangief2_idle, spr_zangief2_jkick, spr_zangief2_jpunch, spr_zangief2_jump, spr_zangief2_ko, spr_zangief2_power, spr_zangief2_projectile, spr_zangief2_skick, spr_zangief2_spunch, spr_zangief2_victory, spr_zangief2_walking
+		sprites_zangief2: .word spr_zangief2_block, spr_zangief2_fjump, spr_zangief2_hit, spr_zangief2_idle, spr_zangief2_jkick, spr_zangief2_jpunch, spr_zangief2_jump, spr_zangief2_ko, spr_zangief2_power, spr_zangief2_projectile, spr_zangief2_skick, spr_zangief2_spunch, spr_zangief2_victory, spr_zangief2_walking
 		#dhalsim1:
 			#dhalsim1_block
 				spr_dhalsim1_block0: .asciiz "../img/bin/sprites/dhalsim/block_1.bin"
@@ -797,7 +797,7 @@
 				spr_dhalsim1_walking2: .asciiz "../img/bin/sprites/dhalsim/walking2_1.bin"
 				spr_dhalsim1_walking3: .asciiz "../img/bin/sprites/dhalsim/walking3_1.bin"
 			spr_dhalsim1_walking: .word 4, spr_dhalsim1_walking0, spr_dhalsim1_walking1, spr_dhalsim1_walking2, spr_dhalsim1_walking3
-		sprites_dhalsim1: .word , spr_dhalsim1_block, spr_dhalsim1_fjump, spr_dhalsim1_hit, spr_dhalsim1_idle, spr_dhalsim1_jkick, spr_dhalsim1_jpunch, spr_dhalsim1_jump, spr_dhalsim1_ko, spr_dhalsim1_power, spr_dhalsim1_projectile, spr_dhalsim1_skick, spr_dhalsim1_spunch, spr_dhalsim1_victory, spr_dhalsim1_walking
+		sprites_dhalsim1: .word spr_dhalsim1_block, spr_dhalsim1_fjump, spr_dhalsim1_hit, spr_dhalsim1_idle, spr_dhalsim1_jkick, spr_dhalsim1_jpunch, spr_dhalsim1_jump, spr_dhalsim1_ko, spr_dhalsim1_power, spr_dhalsim1_projectile, spr_dhalsim1_skick, spr_dhalsim1_spunch, spr_dhalsim1_victory, spr_dhalsim1_walking
 		#dhalsim2:
 			#dhalsim2_block
 				spr_dhalsim2_block0: .asciiz "../img/bin/sprites/dhalsim/block_2.bin"
@@ -846,7 +846,7 @@
 				spr_dhalsim2_walking2: .asciiz "../img/bin/sprites/dhalsim/walking2_2.bin"
 				spr_dhalsim2_walking3: .asciiz "../img/bin/sprites/dhalsim/walking3_2.bin"
 			spr_dhalsim2_walking: .word 4, spr_dhalsim2_walking0, spr_dhalsim2_walking1, spr_dhalsim2_walking2, spr_dhalsim2_walking3
-		sprites_dhalsim2: .word , spr_dhalsim2_block, spr_dhalsim2_fjump, spr_dhalsim2_hit, spr_dhalsim2_idle, spr_dhalsim2_jkick, spr_dhalsim2_jpunch, spr_dhalsim2_jump, spr_dhalsim2_ko, spr_dhalsim2_power, spr_dhalsim2_projectile, spr_dhalsim2_skick, spr_dhalsim2_spunch, spr_dhalsim2_victory, spr_dhalsim2_walking
+		sprites_dhalsim2: .word spr_dhalsim2_block, spr_dhalsim2_fjump, spr_dhalsim2_hit, spr_dhalsim2_idle, spr_dhalsim2_jkick, spr_dhalsim2_jpunch, spr_dhalsim2_jump, spr_dhalsim2_ko, spr_dhalsim2_power, spr_dhalsim2_projectile, spr_dhalsim2_skick, spr_dhalsim2_spunch, spr_dhalsim2_victory, spr_dhalsim2_walking
 		#balrog1:
 			#balrog1_block
 				spr_balrog1_block0: .asciiz "../img/bin/sprites/balrog/block_1.bin"
@@ -894,7 +894,7 @@
 				spr_balrog1_walking2: .asciiz "../img/bin/sprites/balrog/walking2_1.bin"
 				spr_balrog1_walking3: .asciiz "../img/bin/sprites/balrog/walking3_1.bin"
 			spr_balrog1_walking: .word 4, spr_balrog1_walking0, spr_balrog1_walking1, spr_balrog1_walking2, spr_balrog1_walking3
-		sprites_balrog1: .word , spr_balrog1_block, spr_balrog1_fjump, spr_balrog1_hit, spr_balrog1_idle, spr_balrog1_jkick, spr_balrog1_jpunch, spr_balrog1_jump, spr_balrog1_ko, spr_balrog1_power, spr_balrog1_projectile, spr_balrog1_skick, spr_balrog1_spunch, spr_balrog1_victory, spr_balrog1_walking
+		sprites_balrog1: .word spr_balrog1_block, spr_balrog1_fjump, spr_balrog1_hit, spr_balrog1_idle, spr_balrog1_jkick, spr_balrog1_jpunch, spr_balrog1_jump, spr_balrog1_ko, spr_balrog1_power, spr_balrog1_projectile, spr_balrog1_skick, spr_balrog1_spunch, spr_balrog1_victory, spr_balrog1_walking
 		#balrog2:
 			#balrog2_block
 				spr_balrog2_block0: .asciiz "../img/bin/sprites/balrog/block_2.bin"
@@ -942,7 +942,7 @@
 				spr_balrog2_walking2: .asciiz "../img/bin/sprites/balrog/walking2_2.bin"
 				spr_balrog2_walking3: .asciiz "../img/bin/sprites/balrog/walking3_2.bin"
 			spr_balrog2_walking: .word 4, spr_balrog2_walking0, spr_balrog2_walking1, spr_balrog2_walking2, spr_balrog2_walking3
-		sprites_balrog2: .word , spr_balrog2_block, spr_balrog2_fjump, spr_balrog2_hit, spr_balrog2_idle, spr_balrog2_jkick, spr_balrog2_jpunch, spr_balrog2_jump, spr_balrog2_ko, spr_balrog2_power, spr_balrog2_projectile, spr_balrog2_skick, spr_balrog2_spunch, spr_balrog2_victory, spr_balrog2_walking
+		sprites_balrog2: .word spr_balrog2_block, spr_balrog2_fjump, spr_balrog2_hit, spr_balrog2_idle, spr_balrog2_jkick, spr_balrog2_jpunch, spr_balrog2_jump, spr_balrog2_ko, spr_balrog2_power, spr_balrog2_projectile, spr_balrog2_skick, spr_balrog2_spunch, spr_balrog2_victory, spr_balrog2_walking
 		#vega1:
 			#vega1_block
 				spr_vega1_block0: .asciiz "../img/bin/sprites/vega/block_1.bin"
@@ -992,7 +992,7 @@
 				spr_vega1_walking1: .asciiz "../img/bin/sprites/vega/walking1_1.bin"
 				spr_vega1_walking2: .asciiz "../img/bin/sprites/vega/walking2_1.bin"
 			spr_vega1_walking: .word 3, spr_vega1_walking0, spr_vega1_walking1, spr_vega1_walking2
-		sprites_vega1: .word , spr_vega1_block, spr_vega1_fjump, spr_vega1_hit, spr_vega1_idle, spr_vega1_jkick, spr_vega1_jpunch, spr_vega1_jump, spr_vega1_ko, spr_vega1_power, spr_vega1_projectile, spr_vega1_skick, spr_vega1_spunch, spr_vega1_victory, spr_vega1_walking
+		sprites_vega1: .word spr_vega1_block, spr_vega1_fjump, spr_vega1_hit, spr_vega1_idle, spr_vega1_jkick, spr_vega1_jpunch, spr_vega1_jump, spr_vega1_ko, spr_vega1_power, spr_vega1_projectile, spr_vega1_skick, spr_vega1_spunch, spr_vega1_victory, spr_vega1_walking
 		#vega2:
 			#vega2_block
 				spr_vega2_block0: .asciiz "../img/bin/sprites/vega/block_2.bin"
@@ -1042,7 +1042,7 @@
 				spr_vega2_walking1: .asciiz "../img/bin/sprites/vega/walking1_2.bin"
 				spr_vega2_walking2: .asciiz "../img/bin/sprites/vega/walking2_2.bin"
 			spr_vega2_walking: .word 3, spr_vega2_walking0, spr_vega2_walking1, spr_vega2_walking2
-		sprites_vega2: .word , spr_vega2_block, spr_vega2_fjump, spr_vega2_hit, spr_vega2_idle, spr_vega2_jkick, spr_vega2_jpunch, spr_vega2_jump, spr_vega2_ko, spr_vega2_power, spr_vega2_projectile, spr_vega2_skick, spr_vega2_spunch, spr_vega2_victory, spr_vega2_walking
+		sprites_vega2: .word spr_vega2_block, spr_vega2_fjump, spr_vega2_hit, spr_vega2_idle, spr_vega2_jkick, spr_vega2_jpunch, spr_vega2_jump, spr_vega2_ko, spr_vega2_power, spr_vega2_projectile, spr_vega2_skick, spr_vega2_spunch, spr_vega2_victory, spr_vega2_walking
 		#sagat1:
 			#sagat1_block
 				spr_sagat1_block0: .asciiz "../img/bin/sprites/sagat/block_1.bin"
@@ -1090,7 +1090,7 @@
 				spr_sagat1_walking1: .asciiz "../img/bin/sprites/sagat/walking1_1.bin"
 				spr_sagat1_walking2: .asciiz "../img/bin/sprites/sagat/walking2_1.bin"
 			spr_sagat1_walking: .word 3, spr_sagat1_walking0, spr_sagat1_walking1, spr_sagat1_walking2
-		sprites_sagat1: .word , spr_sagat1_block, spr_sagat1_fjump, spr_sagat1_hit, spr_sagat1_idle, spr_sagat1_jkick, spr_sagat1_jpunch, spr_sagat1_jump, spr_sagat1_ko, spr_sagat1_power, spr_sagat1_projectile, spr_sagat1_skick, spr_sagat1_spunch, spr_sagat1_victory, spr_sagat1_walking
+		sprites_sagat1: .word spr_sagat1_block, spr_sagat1_fjump, spr_sagat1_hit, spr_sagat1_idle, spr_sagat1_jkick, spr_sagat1_jpunch, spr_sagat1_jump, spr_sagat1_ko, spr_sagat1_power, spr_sagat1_projectile, spr_sagat1_skick, spr_sagat1_spunch, spr_sagat1_victory, spr_sagat1_walking
 		#sagat2:
 			#sagat2_block
 				spr_sagat2_block0: .asciiz "../img/bin/sprites/sagat/block_2.bin"
@@ -1138,7 +1138,7 @@
 				spr_sagat2_walking1: .asciiz "../img/bin/sprites/sagat/walking1_2.bin"
 				spr_sagat2_walking2: .asciiz "../img/bin/sprites/sagat/walking2_2.bin"
 			spr_sagat2_walking: .word 3, spr_sagat2_walking0, spr_sagat2_walking1, spr_sagat2_walking2
-		sprites_sagat2: .word , spr_sagat2_block, spr_sagat2_fjump, spr_sagat2_hit, spr_sagat2_idle, spr_sagat2_jkick, spr_sagat2_jpunch, spr_sagat2_jump, spr_sagat2_ko, spr_sagat2_power, spr_sagat2_projectile, spr_sagat2_skick, spr_sagat2_spunch, spr_sagat2_victory, spr_sagat2_walking
+		sprites_sagat2: .word spr_sagat2_block, spr_sagat2_fjump, spr_sagat2_hit, spr_sagat2_idle, spr_sagat2_jkick, spr_sagat2_jpunch, spr_sagat2_jump, spr_sagat2_ko, spr_sagat2_power, spr_sagat2_projectile, spr_sagat2_skick, spr_sagat2_spunch, spr_sagat2_victory, spr_sagat2_walking
 		#bison1:
 			#bison1_block
 				spr_bison1_block0: .asciiz "../img/bin/sprites/bison/block_1.bin"
@@ -1188,7 +1188,7 @@
 				spr_bison1_walking2: .asciiz "../img/bin/sprites/bison/walking2_1.bin"
 				spr_bison1_walking3: .asciiz "../img/bin/sprites/bison/walking3_1.bin"
 			spr_bison1_walking: .word 4, spr_bison1_walking0, spr_bison1_walking1, spr_bison1_walking2, spr_bison1_walking3
-		sprites_bison1: .word , spr_bison1_block, spr_bison1_fjump, spr_bison1_hit, spr_bison1_idle, spr_bison1_jkick, spr_bison1_jpunch, spr_bison1_jump, spr_bison1_ko, spr_bison1_power, spr_bison1_projectile, spr_bison1_skick, spr_bison1_spunch, spr_bison1_victory, spr_bison1_walking
+		sprites_bison1: .word spr_bison1_block, spr_bison1_fjump, spr_bison1_hit, spr_bison1_idle, spr_bison1_jkick, spr_bison1_jpunch, spr_bison1_jump, spr_bison1_ko, spr_bison1_power, spr_bison1_projectile, spr_bison1_skick, spr_bison1_spunch, spr_bison1_victory, spr_bison1_walking
 		#bison2:
 			#bison2_block
 				spr_bison2_block0: .asciiz "../img/bin/sprites/bison/block_2.bin"
@@ -1238,5 +1238,5 @@
 				spr_bison2_walking2: .asciiz "../img/bin/sprites/bison/walking2_2.bin"
 				spr_bison2_walking3: .asciiz "../img/bin/sprites/bison/walking3_2.bin"
 			spr_bison2_walking: .word 4, spr_bison2_walking0, spr_bison2_walking1, spr_bison2_walking2, spr_bison2_walking3
-		sprites_bison2: .word , spr_bison2_block, spr_bison2_fjump, spr_bison2_hit, spr_bison2_idle, spr_bison2_jkick, spr_bison2_jpunch, spr_bison2_jump, spr_bison2_ko, spr_bison2_power, spr_bison2_projectile, spr_bison2_skick, spr_bison2_spunch, spr_bison2_victory, spr_bison2_walking
+		sprites_bison2: .word spr_bison2_block, spr_bison2_fjump, spr_bison2_hit, spr_bison2_idle, spr_bison2_jkick, spr_bison2_jpunch, spr_bison2_jump, spr_bison2_ko, spr_bison2_power, spr_bison2_projectile, spr_bison2_skick, spr_bison2_spunch, spr_bison2_victory, spr_bison2_walking
 	all_sprites: .word sprites_ryu1, sprites_ryu2, sprites_honda1, sprites_honda2, sprites_blanka1, sprites_blanka2, sprites_guile1, sprites_guile2, sprites_ken1, sprites_ken2, sprites_chunli1, sprites_chunli2, sprites_zangief1, sprites_zangief2, sprites_dhalsim1, sprites_dhalsim2, sprites_balrog1, sprites_balrog2, sprites_vega1, sprites_vega2, sprites_sagat1, sprites_sagat2, sprites_bison1, sprites_bison2

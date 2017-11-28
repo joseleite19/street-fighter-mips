@@ -13,7 +13,7 @@ screen_select_ai:
 
 	li $s1, 0#s1 = p1 selecao
 	li $s2, 0#s2 = p2 selecao
-	sai_fori:	cpy_mem(buffer1,VGAsz,VGA)
+	sai_fori:	vga_print_full(buffer1,0,0)
 
 				mod($t3, $s1, 4)
 				mul $t3, $t3, 34
@@ -30,8 +30,10 @@ screen_select_ai:
 
 				print_rect($t3,$t4,35,35,P1_COLOR)
 
-				la $a0, p1
-				printsr($a0,$a1,$a2,P1_COLOR)
+				vga_refresh()
+
+				#la $a0, p1
+				#printsr($a0,$a1,$a2,P1_COLOR)
 
 	sai_read:	read_wasd_enter($t0)
 

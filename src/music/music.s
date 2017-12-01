@@ -52,7 +52,9 @@
 		#midi($t4,$t6,24,$t5)
 		midi($t4,$t6,24,50)
 
-		max($t3, 10)
+		#max($t3, 10)
+		add $t1, $t1, $t0
+		div $t1, $t1, 2
 		add $t1, $t1, $t3
 		w_set_val(music_nxt_t,		0,	$t1)
 

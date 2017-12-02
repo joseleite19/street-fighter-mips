@@ -35,26 +35,29 @@ screen_select_ai:
 				#la $a0, p1
 				#printsr($a0,$a1,$a2,P1_COLOR)
 
-	sai_read:	read_wasd_enter($t0)
+	sai_read:	keyboard_upd()
 
-				beq $t0,1,sai_dec#w
-				beq $t0,2,sai_inc#a
-				beq $t0,0,sai_do#enter
+				bu_get_val(wasd,0,$t0)#w
+				keyboard_check_j($t0,sai_dec)
+
+				bu_get_val(wasd,2,$t0)#s
+				keyboard_check_j($t0,sai_inc)
+
+				bu_get_val(enter,0,$t0)#f
+				keyboard_check_j($t0,sai_do)
+
 				j sai_read
 
-				#seta pra baixo
 				sai_inc:addi $s1,$s1,1
 						bne $s1,8,sai_fori
 						li $s1, 0
 						j sai_fori
-				#seta pra cima
 				sai_dec:addi $s1,$s1,-1
 						bne $s1,-1,sai_fori
 						li $s1, 7
 						j sai_fori
-				#enter
 				sai_do:	bne $s1, 0, sai_do2
-						# li $s2, 1 #descomentar isso depois de gerar os outros sprites
+						li $s2, 1
 				sai_do2:player_init_info($s1,$s2)
 						jal select_stage
 						j g_start

@@ -25,10 +25,10 @@
 
 .macro player_get_info(%player, %info, %reg)
 	la $at, %player
-	lh %reg, %info($at)
+	lhu %reg, %info($at)
 .end_macro
 .macro player_get_infor(%player, %info, %reg)
-	lh %reg, %info(%player)
+	lhu %reg, %info(%player)
 .end_macro
 
 .macro player_init_info(%p1, %p2)
@@ -42,8 +42,8 @@
 		player_set_info(player2,PLAYER_CHAR,$a1)
 		player_set_info(player1,PLAYER_X,50)
 		player_set_info(player2,PLAYER_X,250)
-		player_set_info(player1,PLAYER_Y,210)
-		player_set_info(player2,PLAYER_Y,210)
+		player_set_info(player1,PLAYER_Y,GROUND_Y)
+		player_set_info(player2,PLAYER_Y,GROUND_Y)
 		player_set_info(player1,PLAYER_HP,100)
 		player_set_info(player1,PLAYER_HP_MAX,100)
 		ble $a1, 7, normal_hp #7 is the last non boss
@@ -60,7 +60,7 @@
 		j after_hp
 	after_hp:
 		player_set_info(player1,PLAYER_ANIM,ANIM_IDLE)
-		player_set_info(player2,PLAYER_ANIM,ANIM_POWER)
+		player_set_info(player2,PLAYER_ANIM,ANIM_IDLE)
 		player_set_info(player1,PLAYER_ANIM_FRAME,0)
 		player_set_info(player2,PLAYER_ANIM_FRAME,1)
 		player_set_info(player1,PLAYER_SPD_VERT,0)
@@ -134,3 +134,90 @@ player_nxt_frame_:sw $ra 0($sp)					#t0 = player1
 player_nxt_frame_save:player_set_infor($t0,PLAYER_ANIM_FRAME,$t3)
 	lw $ra 0($sp)
 	jr $ra
+
+
+
+.macro player_action(%player,%addr,%after)
+	la $t9, %player
+	jal %addr
+	j %after
+.end_macro
+pa_w: nop#jump
+	player_get_infor($t9,PLAYER_ANIM,$t0)
+	beq $t0, ANIM_IDLE, pa_w1
+	beq $t0, ANIM_BLOCK, pa_w1
+	beq $t0, ANIM_WALKING, pa_w1
+	j pa_jr_ra
+pa_w1: nop
+	player_get_infor($t9,PLAYER_Y,$t0)
+	bne $t0, GROUND_Y pa_jr_ra
+	add	$t0, $t0, 2
+	player_set_infor($t9,PLAYER_Y,$t0)
+	player_get_infor($t9,PLAYER_SPD_VERT,$t0)
+	add	$t0, $t0, 5
+	player_set_infor($t9,PLAYER_SPD_VERT,$t0)
+	player_set_infor($t9,PLAYER_ANIM,ANIM_JUMP)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+	j pa_jr_ra
+
+pa_a: nop#walk left
+	player_get_infor($t9,PLAYER_Y,$t0)
+	bne $t0, GROUND_Y pa_jr_ra
+	player_get_infor($t9,PLAYER_ANIM,$t0)
+	beq $t0, ANIM_IDLE, pa_a1
+	beq $t0, ANIM_BLOCK, pa_a1
+	beq $t0, ANIM_WALKING, pa_a2
+	j pa_jr_ra
+pa_a1: nop
+	player_set_infor($t9,PLAYER_ANIM,ANIM_WALKING)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+pa_a2: nop
+	player_get_infor($t9,PLAYER_X,$t0)
+	sub	$t0, $t0, 5
+	max($t0, $zero)
+	player_set_infor($t9,PLAYER_X,$t0)
+	j pa_jr_ra
+
+pa_s: nop#block
+	player_get_infor($t9,PLAYER_Y,$t0)
+	bne $t0, GROUND_Y pa_jr_ra
+	player_get_infor($t9,PLAYER_ANIM,$t0)
+	beq $t0, ANIM_IDLE, pa_s1
+	beq $t0, ANIM_WALKING, pa_s1
+	j pa_jr_ra
+pa_s1: nop
+	player_set_infor($t9,PLAYER_ANIM,ANIM_BLOCK)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+	j pa_jr_ra
+
+pa_d: nop#walk right
+	player_get_infor($t9,PLAYER_Y,$t0)
+	print_int($t0)
+	print_int(GROUND_Y)
+	bne $t0, GROUND_Y pa_jr_ra
+	player_get_infor($t9,PLAYER_ANIM,$t0)
+	beq $t0, ANIM_IDLE, pa_d1
+	beq $t0, ANIM_BLOCK, pa_d1
+	beq $t0, ANIM_WALKING, pa_d2
+	j pa_jr_ra
+pa_d1: nop
+	player_set_infor($t9,PLAYER_ANIM,ANIM_WALKING)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+pa_d2: nop
+	player_get_infor($t9,PLAYER_X,$t0)
+	add	$t0, $t0, 5
+	min($t0, 230)
+	player_set_infor($t9,PLAYER_X,$t0)
+	j pa_jr_ra
+
+pa_0: nop#idle
+	player_get_infor($t9,PLAYER_ANIM,$t0)
+	beq $t0, ANIM_WALKING, pa_01
+	beq $t0, ANIM_BLOCK, pa_01
+	j pa_jr_ra
+pa_01: nop
+	player_set_infor($t9,PLAYER_ANIM,ANIM_IDLE)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+	j pa_jr_ra
+
+pa_jr_ra: jr $ra

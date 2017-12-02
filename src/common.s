@@ -4,6 +4,7 @@
 .eqv VGAh 240
 .eqv VGAsz 76800#320 * 240
 
+.eqv KB_ADD  0xFF100004
 .eqv KB_ADD1 0xFF100100
 .eqv KB_ADD2 0xFF100104
 
@@ -12,17 +13,25 @@
 .eqv WHITE 0xff
 .eqv RED 0x07
 
+.eqv GROUND_Y 210
+
+.eqv CHAR_Z 25
+.eqv CHAR_X 23
+
 .data
 	screen_sz: .word 320 240
-	CHAR_W: .asciiz "w"
-	CHAR_A: .asciiz "a"
-	CHAR_S: .asciiz "s"
-	CHAR_D: .asciiz "d"
-	CHAR_ENTER: .asciiz "f"
 
-	.align 2
+	letters: .asciiz "abcdefghijklmnopqrstuvwxyz"
+	numbers: .asciiz "0123456789"
+	wasd: .asciiz "wasd"
+	enter: .asciiz "f"
+
+	.word 0#align
+
 	VGA: .space VGAsz
 	VGAend: .space 4
+
+	KEYBOARD: .space 4
 .text
 
 .macro sysc(%code)
@@ -43,6 +52,74 @@
 	move %reg1, $v0
 	max_end: nop
 .end_macro
+
+
+.macro midi(%pitch, %duration, %instrument, %volume)
+	add $a0, $zero, %pitch
+	add $a1, $zero, %duration
+	add $a2, $zero, %instrument
+	add $a3, $zero, %volume
+	sysc(31)
+.end_macro
+
+.macro w_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lw %reg, 0($a0)
+.end_macro
+
+.macro w_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	sw %val, 0($a0)
+.end_macro
+
+.macro h_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lh %reg, 0($a0)
+.end_macro
+
+.macro hu_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	lhu %reg, 0($a0)
+.end_macro
+
+.macro h_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	add $a0, $a0, %ind
+	sh %val, 0($a0)
+.end_macro
+
+.macro b_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	lb %reg, 0($a0)
+.end_macro
+
+.macro bu_get_val(%adr, %ind, %reg)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	lbu %reg, 0($a0)
+.end_macro
+
+.macro b_set_val(%adr, %ind, %val)
+	la $a0, %adr
+	add $a0, $a0, %ind
+	sh %val, 0($a0)
+.end_macro
+
+
 
 .macro fill_scr(%color)
 	add $a0, $zero, %color
@@ -248,26 +325,58 @@ print_rect_:
 	move %reg, $v0
 .end_macro
 
+.macro keyboard_upd()
+	jal keyboard_upd_
+.end_macro
+keyboard_upd_:
+	la $t0, KB_ADD
+	lw $t1, 0($t0)
+	sw $zero, 0($t0)
+
+	la $t0, KEYBOARD
+	sw $t1, 0($t0)
+	jr $ra
+
+.macro keyboard_check(%key,%reg)
+	add $a0, $zero, %key
+	jal keyboard_check_
+	add %reg, $zero, $v0
+.end_macro
+.macro keyboard_check_j(%key,%jump)
+	add $a0, $zero, %key
+	jal keyboard_check_
+	bne $v0, $zero, %jump
+.end_macro
+keyboard_check_:
+	la $t0, KEYBOARD
+	sb $t1, 0($t0)
+	beq $t1, $a0, kb_check_yes
+	sb $t1, 1($t0)
+	beq $t1, $a0, kb_check_yes
+	sb $t1, 2($t0)
+	beq $t1, $a0, kb_check_yes
+	sb $t1, 3($t0)
+	beq $t1, $a0, kb_check_yes
+	kb_check_no:li $v0, 0
+				jr $ra
+	kb_check_yes:li $v0, 1
+				jr $ra
+
 .macro read_wasd_enter(%reg)
 	read_char($a0)
 	jal read_wasd_enter_
 	move %reg,$v0
 .end_macro
 read_wasd_enter_:
-	la $a1, CHAR_W
-	lbu $a1, 0($a1)
+	bu_get_val(wasd,0,$a1)
 	beq $a0, $a1, read__w
-	la $a1, CHAR_A
-	lbu $a1, 0($a1)
+	bu_get_val(wasd,1,$a1)
 	beq $a0, $a1, read__a
-	la $a1, CHAR_S
-	lbu $a1, 0($a1)
+	bu_get_val(wasd,2,$a1)
 	beq $a0, $a1, read__s
-	la $a1, CHAR_D
-	lbu $a1, 0($a1)
+	bu_get_val(wasd,3,$a1)
 	beq $a0, $a1, read__d
-	la $a1, CHAR_ENTER
-	lbu $a1, 0($a1)
+	bu_get_val(enter,0,$a1)
 	beq $a0, $a1, read__enter
 read__other:li $v0, -1
 			jr $ra
@@ -392,69 +501,3 @@ jr_ra:		jr $ra
 .macro vga_refresh()
 	cpy_mem(VGA,VGAsz,_VGA)
 .end_macro
-
-.macro midi(%pitch, %duration, %instrument, %volume)
-	add $a0, $zero, %pitch
-	add $a1, $zero, %duration
-	add $a2, $zero, %instrument
-	add $a3, $zero, %volume
-	sysc(31)
-.end_macro
-
-.macro w_get_val(%adr, %ind, %reg)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	lw %reg, 0($a0)
-.end_macro
-
-.macro w_set_val(%adr, %ind, %val)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	sw %val, 0($a0)
-.end_macro
-
-.macro h_get_val(%adr, %ind, %reg)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	lh %reg, 0($a0)
-.end_macro
-
-.macro hu_get_val(%adr, %ind, %reg)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	lhu %reg, 0($a0)
-.end_macro
-
-.macro h_set_val(%adr, %ind, %val)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	add $a0, $a0, %ind
-	sh %val, 0($a0)
-.end_macro
-
-.macro b_get_val(%adr, %ind, %reg)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	lb %reg, 0($a0)
-.end_macro
-
-.macro bu_get_val(%adr, %ind, %reg)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	lbu %reg, 0($a0)
-.end_macro
-
-.macro b_set_val(%adr, %ind, %val)
-	la $a0, %adr
-	add $a0, $a0, %ind
-	sh %val, 0($a0)
-.end_macro
-

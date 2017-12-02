@@ -48,24 +48,32 @@ screen_select_vs:
 				add $a1, $s3, 10
 				add $a2, $s4, -3
 				li $a3, P1_COLOR
-
-				syscall
+				sysc(104)
 
 				la $a0, p2
 				add $a1, $s5, 10
 				add $a2, $s6, 31
 				li $a3, P2_COLOR
+				sysc(104)
 
-				syscall
 
+	svs_read:	keyboard_upd()
 
-	svs_read:	read_wasd_enter($t0)
+				bu_get_val(wasd,0,$t0)#w
+				keyboard_check_j($t0,svs_dec1)
 
-				beq $t0,1,svs_dec1#w
-				beq $t0,2,svs_inc1#s
-				beq $t0,3,svs_dec2#a
-				beq $t0,4,svs_inc2#d
-				beq $t0,0,svs_do#enter
+				bu_get_val(wasd,2,$t0)#s
+				keyboard_check_j($t0,svs_inc1)
+
+				bu_get_val(letters,4,$t0)#e
+				keyboard_check_j($t0,svs_dec2)
+
+				bu_get_val(letters,3,$t0)#d
+				keyboard_check_j($t0,svs_inc2)
+
+				bu_get_val(enter,0,$t0)#f
+				keyboard_check_j($t0,svs_do)
+
 				j svs_read
 
 				#seta pra baixo

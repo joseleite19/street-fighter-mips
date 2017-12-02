@@ -40,11 +40,18 @@ screen_menu: fill_scr(RED)# Preenche a tela de vermelho
 
 		afterprint:vga_refresh()
 
-		read_wasd_enter($s1)#le_letra($s1)
-		beq $s1,1,dec#beq $s1,KEY_W,inc
-		beq $s1,2,inc#beq $s1,KEY_S,dec
-		beq $s1,0,do #beq $s1,KEY_ENTER,do
-		j afterprint #caso digitou outra coisa, ignora e le denovo
+		read:keyboard_upd()
+
+		bu_get_val(wasd,0,$t0)
+		keyboard_check_j($t0,dec)
+
+		bu_get_val(wasd,2,$t0)
+		keyboard_check_j($t0,inc)
+
+		bu_get_val(enter,0,$t0)
+		keyboard_check_j($t0,do)
+
+		j read #caso digitou outra coisa, ignora e le denovo
 
 		#seta pra baixo
 		inc:addi $s0,$s0,1

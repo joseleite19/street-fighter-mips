@@ -24,6 +24,7 @@
 	letters: .asciiz "abcdefghijklmnopqrstuvwxyz"
 	numbers: .asciiz "0123456789"
 	wasd: .asciiz "wasd"
+	ijkl: .asciiz "ijkl"
 	enter: .asciiz "f"
 
 	.word 0#align
@@ -315,6 +316,40 @@ print_rect_:
 
 	jr $ra
 
+.macro print_rect_full(%x,%y,%w,%h,%color)
+	add $t0, $zero, %x
+	add $t1, $zero, %y
+	add $t2, $zero, %w
+	add $t3, $zero, %h
+	add $t4, $zero, %color
+	jal print_rect_full_
+.end_macro
+print_rect_full_:
+	mul $t1, $t1, VGAw
+	mul $t3, $t3, VGAw
+	la $t9, VGA
+	add $t9, $t9, $t0 #VGA[x][0]
+	add $t9, $t9, $t1 #VGA[x][y]
+	add $t8, $t9, $t3 #VGA[x][y+h]
+
+	print_hex($t9)
+	print_hex($t8)
+
+	prf_for1: beq $t9, $t8, prf_jr_ra
+		add $t7, $t9, $t2 #VGA[x+w][y]
+		move $t6, $t9
+		prf_for2: beq $t6, $t7, prf_for2_end
+			sb $t4, 0($t6)
+			add $t6, $t6, 1
+			j prf_for2
+
+		prf_for2_end: nop
+		add $t9, $t9, VGAw
+		j prf_for1
+
+	prf_jr_ra: jr $ra
+
+
 .macro read_int(%reg)
 	sysc(5)
 	move %reg, $v0
@@ -349,13 +384,13 @@ keyboard_upd_:
 .end_macro
 keyboard_check_:
 	la $t0, KEYBOARD
-	sb $t1, 0($t0)
+	lbu $t1, 0($t0)
 	beq $t1, $a0, kb_check_yes
-	sb $t1, 1($t0)
+	lbu $t1, 1($t0)
 	beq $t1, $a0, kb_check_yes
-	sb $t1, 2($t0)
+	lbu $t1, 2($t0)
 	beq $t1, $a0, kb_check_yes
-	sb $t1, 3($t0)
+	lbu $t1, 3($t0)
 	beq $t1, $a0, kb_check_yes
 	kb_check_no:li $v0, 0
 				jr $ra
@@ -434,7 +469,18 @@ cpy_mem_:	lw $v0, 0($a0)
 			beq $a2, $a0, jr_ra
 			beq $a2, $a1, jr_ra
 			j cpy_mem_
-cpy_mem_b_:	lbu $v0, 0($a0)
+#cpy_mem_b_:	move $v0, $a0
+#			mod($v1, $v0, 4)
+#			bne $v1, $zero, cpy_mem_b_2
+#			la $v1, 0xc7c7c7c7
+#			lw $v0, 0($a0)
+#			add $a0, $a0, 3
+#			add $a1, $a1, 3
+#			beq $v0, $v1, cpy_mem_bno
+#			sw $v0, -3($a1)
+#			j cpy_mem_bno
+#cpy_mem_b_2:lbu $v0, 0($a0)
+cpy_mem_b_:lbu $v0, 0($a0)
 			beq $v0, 0xc7 cpy_mem_bno
 			sb $v0, 0($a1)
 cpy_mem_bno:add $a0, $a0, 1

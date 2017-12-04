@@ -143,6 +143,7 @@ player_nxt_frame_save:player_set_infor($t0,PLAYER_ANIM_FRAME,$t3)
 	j %after
 .end_macro
 pa_w: nop#jump
+	print("pa_w\n")
 	player_get_infor($t9,PLAYER_ANIM,$t0)
 	beq $t0, ANIM_IDLE, pa_w1
 	beq $t0, ANIM_BLOCK, pa_w1
@@ -151,16 +152,17 @@ pa_w: nop#jump
 pa_w1: nop
 	player_get_infor($t9,PLAYER_Y,$t0)
 	bne $t0, GROUND_Y pa_jr_ra
-	add	$t0, $t0, 2
+	sub	$t0, $t0, 30
 	player_set_infor($t9,PLAYER_Y,$t0)
 	player_get_infor($t9,PLAYER_SPD_VERT,$t0)
-	add	$t0, $t0, 5
+	sub $t0, $t0, 30
 	player_set_infor($t9,PLAYER_SPD_VERT,$t0)
 	player_set_infor($t9,PLAYER_ANIM,ANIM_JUMP)
 	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
 	j pa_jr_ra
 
 pa_a: nop#walk left
+	print("pa_a\n")
 	player_get_infor($t9,PLAYER_Y,$t0)
 	bne $t0, GROUND_Y pa_jr_ra
 	player_get_infor($t9,PLAYER_ANIM,$t0)
@@ -179,6 +181,7 @@ pa_a2: nop
 	j pa_jr_ra
 
 pa_s: nop#block
+	print("pa_s\n")
 	player_get_infor($t9,PLAYER_Y,$t0)
 	bne $t0, GROUND_Y pa_jr_ra
 	player_get_infor($t9,PLAYER_ANIM,$t0)
@@ -191,9 +194,8 @@ pa_s1: nop
 	j pa_jr_ra
 
 pa_d: nop#walk right
+	print("pa_d\n")
 	player_get_infor($t9,PLAYER_Y,$t0)
-	print_int($t0)
-	print_int(GROUND_Y)
 	bne $t0, GROUND_Y pa_jr_ra
 	player_get_infor($t9,PLAYER_ANIM,$t0)
 	beq $t0, ANIM_IDLE, pa_d1
@@ -211,6 +213,7 @@ pa_d2: nop
 	j pa_jr_ra
 
 pa_0: nop#idle
+	print("pa_0\n")
 	player_get_infor($t9,PLAYER_ANIM,$t0)
 	beq $t0, ANIM_WALKING, pa_01
 	beq $t0, ANIM_BLOCK, pa_01
@@ -219,5 +222,26 @@ pa_01: nop
 	player_set_infor($t9,PLAYER_ANIM,ANIM_IDLE)
 	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
 	j pa_jr_ra
+
+pa_done: nop
+	print("pa_done\n")
+	lh $t0, PLAYER_SPD_VERT($t9)
+	player_get_infor($t9,PLAYER_Y,$t1)
+	print_int($t0)
+	print_int($t1)
+	beq $t1, GROUND_Y, pa_jr_ra
+	add $t1, $t1, $t0
+	bge $t1, GROUND_Y, pa_done1
+	add $t0, $t0, 20
+	player_set_infor($t9,PLAYER_SPD_VERT,$t0)
+	player_set_infor($t9,PLAYER_Y,$t1)
+	j pa_jr_ra
+pa_done1: nop
+	player_set_infor($t9,PLAYER_SPD_VERT,$zero)
+	player_set_infor($t9,PLAYER_Y,GROUND_Y)
+	player_set_infor($t9,PLAYER_ANIM,ANIM_IDLE)
+	player_set_infor($t9,PLAYER_ANIM_FRAME,0)
+
+
 
 pa_jr_ra: jr $ra

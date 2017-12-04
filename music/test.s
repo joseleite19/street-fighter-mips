@@ -17,7 +17,7 @@ j MAIN
 	add $a0, $a0, %base_note
 	lw $a1, 0(%duration)
 	lw $a2, 0(%instrument)
-	lw $a3, 0(%volume)
+	li $a3, 150
 	jal SOUND
 .end_macro
 SOUND:

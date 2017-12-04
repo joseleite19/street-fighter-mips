@@ -48,7 +48,7 @@
 		#print_int($t6)
 		#print_int($t7)
 
-		midi($t4,$t6,24,50)
+		midi($t4,$t6,24,250)
 
 		#max($t3, 10)
 		add $t1, $t1, $t0

@@ -510,8 +510,8 @@ jr_ra:		jr $ra
 	add %reg, $zero, $a0
 .end_macro
 
-.macro vga_print_full(%orig, %x, %y)
 
+.macro vga_print_full(%orig, %x, %y)
 	add $v0, $zero, %y
 	mul $v0, $v0, VGAw
 	add $v0, $v0, %x	#[x][y]
@@ -524,8 +524,8 @@ jr_ra:		jr $ra
 	jal cpy_mem_
 .end_macro
 
-.macro vga_print(%orig, %x, %y)
 
+.macro vga_print(%orig, %x, %y)
 	add $v0, $zero, %y
 	mul $v0, $v0, VGAw
 	add $v0, $v0, %x	#[x][y]
@@ -538,8 +538,8 @@ jr_ra:		jr $ra
 	jal cpy_mem_b_
 .end_macro
 
-.macro vga_print_h(%orig, %x, %y, %h)
 
+.macro vga_print_h(%orig, %x, %y, %h)
 	add $v0, $zero, %y
 	mul $v0, $v0, VGAw
 	add $v0, $v0, %x		#[x][y]
@@ -558,6 +558,16 @@ jr_ra:		jr $ra
 	jal cpy_mem_b_
 .end_macro
 
+
 .macro vga_refresh()
 	cpy_mem(VGA,VGAsz,_VGA)
 .end_macro
+
+
+.macro copy_addr(%sd_add,%dest_add,%qtd_byte)
+	add $a0, $zero, %sd_add
+	la $a1, %dest_add
+	add $a2, $zero, %qtd_byte
+	_syscall(49)
+.end_macro
+

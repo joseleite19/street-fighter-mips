@@ -37,10 +37,10 @@ screen_select_ai:
 
 	sai_read:	keyboard_upd()
 
-				bu_get_val(wasd,0,$t0)#w
+				bu_get_val(p1keys,0,$t0)#w
 				keyboard_check_j($t0,sai_dec)
 
-				bu_get_val(wasd,2,$t0)#s
+				bu_get_val(p1keys,2,$t0)#s
 				keyboard_check_j($t0,sai_inc)
 
 				bu_get_val(enter,0,$t0)#f

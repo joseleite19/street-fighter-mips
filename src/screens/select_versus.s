@@ -59,16 +59,16 @@ screen_select_vs:
 
 	svs_read:	keyboard_upd()
 
-				bu_get_val(wasd,0,$t0)#w
+				bu_get_val(p1keys,0,$t0)#w
 				keyboard_check_j($t0,svs_dec1)
 
-				bu_get_val(wasd,2,$t0)#s
+				bu_get_val(p1keys,2,$t0)#s
 				keyboard_check_j($t0,svs_inc1)
 
-				bu_get_val(letters,4,$t0)#e
+				bu_get_val(p2keys,0,$t0)#e
 				keyboard_check_j($t0,svs_dec2)
 
-				bu_get_val(letters,3,$t0)#d
+				bu_get_val(p2keys,2,$t0)#d
 				keyboard_check_j($t0,svs_inc2)
 
 				bu_get_val(enter,0,$t0)#f

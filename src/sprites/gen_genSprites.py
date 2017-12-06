@@ -15,15 +15,14 @@ chars = [
 
 sprites = [
 	("block",1),
-	("fjump",4),
 	("hit",1),
 	("idle",2),
 	("jkick",1),
 	("jpunch",1),
 	("jump",2),
 	("ko",1),
-	("power",2),
-	("projectile",0),
+	("power",3),
+	("projectile",1),
 	("skick",1),
 	("spunch",1),
 	("victory",1),
@@ -31,29 +30,13 @@ sprites = [
 ]
 
 excs = [
-	("balrog","fjump",0),
-	("blanka","fjump",0),
 	("blanka","walking",3),
-	("bison","fjump",0),
-	("bison","power",4),
-	("chunli","fjump",3),
-	("chunli","projectile",1),
-	("dhalsim","fjump",0),
-	("dhalsim","projectile",1),
-	("guile","fjump",5),
-	("guile","power",3),
-	("guile","projectile",1),
-	("honda","fjump",3),
+	("bison","power",5),
+	("guile","power",4),
 	("honda","walking",2),
-	("ken","power",4),
-	("ryu","projectile",1),
-	("sagat","fjump",0),
-	("sagat","projectile",1),
 	("sagat","walking",3),
-	("vega","fjump",3),
 	("vega","walking",3),
-	("zangief","fjump",0),
-	("zangief","power",4),
+	("zangief","power",5),
 ]
 	
 

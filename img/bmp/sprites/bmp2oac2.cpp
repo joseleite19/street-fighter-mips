@@ -101,12 +101,12 @@ int main(int argc,char **argv){
 	int cont=0;
 	unsigned char hex,rq,bq,gq;
 
-	int w = 320;
-	int h = height;
-	fwrite(&w,1,sizeof(int),aoutbin);
-	fwrite(&h,1,sizeof(int),aoutbin);
-	fwrite(&w,1,sizeof(int),aoutbin2);
-	fwrite(&h,1,sizeof(int),aoutbin2);
+	unsigned int w = 320;
+	unsigned int h = height;
+	fwrite(&w,1,sizeof(unsigned int),aoutbin);
+	fwrite(&h,1,sizeof(unsigned int),aoutbin);
+	fwrite(&w,1,sizeof(unsigned int),aoutbin2);
+	fwrite(&h,1,sizeof(unsigned int),aoutbin2);
 	// cout << "sizeof(int) = " << sizeof(int) << endl;
 	for(i=0;i<height;i++){
 		fprintf(aout,"%05X : ",cont);
@@ -164,7 +164,27 @@ int main(int argc,char **argv){
 			cont++;
 		}
 	}
+
+	for(i=height;i<117;i++){
+		fprintf(aout,"%05X : ",cont);
+		fprintf(aout2,"%05X : ",cont);
+		for(j=0;j<320;j++){
+			fprintf(aout,"%02X",inv);
+			fprintf(aout2,"%02X",inv);
+
+			if(j==319)fprintf(aout,";\n");
+			else fprintf(aout," ");
+			if(j==319)fprintf(aout2,";\n");
+			else fprintf(aout2," ");
+
+			fwrite(&inv,1,sizeof(unsigned char),aoutbin);
+			fwrite(&inv,1,sizeof(unsigned char),aoutbin2);
+			cont++;
+		}	
+	}
+
 	fprintf(aout,"\nEND;\n");
+	fprintf(aout2,"\nEND;\n");
 	fclose(aout);
 	fclose(aout2);
 	fclose(aoutbin);

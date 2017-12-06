@@ -206,6 +206,7 @@ int main(int argc, char **argv){
 
 
 	uint note,duration,intensity,time,prevTime = 0,cont=0;
+	cout << "Delays: ";
 	for(auto &it : notes){
 		time = it.ff;
 		for(auto &it2 : it.ss){
@@ -217,6 +218,7 @@ int main(int argc, char **argv){
 	}
 	cout << endl;
 
+	cout << "Notes: ";
 	for(auto &it : notes){
 		time = it.ff;
 		for(auto &it2 : it.ss){
@@ -227,6 +229,7 @@ int main(int argc, char **argv){
 	cout << endl;
 
 
+	cout << "Durations: ";
 	for(auto &it : notes){
 		time = it.ff;
 		for(auto &it2 : it.ss){
@@ -237,6 +240,7 @@ int main(int argc, char **argv){
 	cout << endl;
 
 
+	cout << "Intensities: ";
 	for(auto &it : notes){
 		time = it.ff;
 		for(auto &it2 : it.ss){
@@ -246,7 +250,7 @@ int main(int argc, char **argv){
 	}
 	cout << endl;
 
-	cout << cont << endl;
+	cout << "Note count: " << cont << endl;
 
 	delete header;
 

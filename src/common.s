@@ -25,6 +25,8 @@
 	numbers: .asciiz "0123456789"
 	wasd: .asciiz "wasd"
 	ijkl: .asciiz "ijkl"
+	p1keys: .asciiz "wasdqezxc"
+	p2keys: .asciiz "ijkluom,."
 	enter: .asciiz "f"
 
 	.word 0#align
@@ -114,6 +116,12 @@
 	lbu %reg, 0($a0)
 .end_macro
 
+.macro bu_get_valr(%adr, %ind, %reg)
+	add $a0, $zero, %adr
+	add $a0, $a0, %ind
+	lbu %reg, 0($a0)
+.end_macro
+
 .macro b_set_val(%adr, %ind, %val)
 	la $a0, %adr
 	add $a0, $a0, %ind
@@ -121,6 +129,15 @@
 .end_macro
 
 
+.macro pop(%reg)
+	lw %reg, 0($sp)
+	add $sp, $sp, 4
+.end_macro
+
+.macro push(%val)
+	sub $sp, $sp, 4
+	sw %val, 0($sp)
+.end_macro
 
 .macro fill_scr(%color)
 	add $a0, $zero, %color
@@ -331,9 +348,6 @@ print_rect_full_:
 	add $t9, $t9, $t0 #VGA[x][0]
 	add $t9, $t9, $t1 #VGA[x][y]
 	add $t8, $t9, $t3 #VGA[x][y+h]
-
-	print_hex($t9)
-	print_hex($t8)
 
 	prf_for1: beq $t9, $t8, prf_jr_ra
 		add $t7, $t9, $t2 #VGA[x+w][y]

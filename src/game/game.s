@@ -46,42 +46,36 @@ g_start:nop
 
 					jal music_play
 
+					prints("oo",150,10,WHITE)
+
+					jal music_play
+
 					keyboard_upd()
 
-					bu_get_val(wasd,0,$t0)#w
-					keyboard_check_j($t0,p1_w)
-					bu_get_val(wasd,1,$t0)#a
-					keyboard_check_j($t0,p1_a)
-					bu_get_val(wasd,2,$t0)#s
-					keyboard_check_j($t0,p1_s)
-					bu_get_val(wasd,3,$t0)#d
-					keyboard_check_j($t0,p1_d)
-					player_action(player1,pa_0,p1_done)
-		p1_w:		player_action(player1,pa_w,p1_done)
-		p1_a:		player_action(player1,pa_a,p1_done)
-		p1_s:		player_action(player1,pa_s,p1_done)
-		p1_d:		player_action(player1,pa_d,p1_done)
-		p1_done:	player_action(player1,pa_done,p1_after)
-		p1_after:	nop
+					jal music_play
 
+					player_move_projectile(player1,28)
+					player_move_projectile2(player2,28)
 
+					jal music_play
 
-					bu_get_val(ijkl,0,$t0)#w
-					keyboard_check_j($t0,p2_w)
-					bu_get_val(ijkl,1,$t0)#a
-					keyboard_check_j($t0,p2_a)
-					bu_get_val(ijkl,2,$t0)#s
-					keyboard_check_j($t0,p2_s)
-					bu_get_val(ijkl,3,$t0)#d
-					keyboard_check_j($t0,p2_d)
+					player_check_action(player1,p1keys)
 
-					player_action(player2,pa_0,p2_done)
-		p2_w:		player_action(player2,pa_w,p2_done)
-		p2_a:		player_action(player2,pa_a,p2_done)
-		p2_s:		player_action(player2,pa_s,p2_done)
-		p2_d:		player_action(player2,pa_d,p2_done)
-		p2_done:	player_action(player2,pa_done,p2_after)
-		p2_after:	nop
+					jal music_play
+
+					player_check_action(player2,p2keys)
+
+					jal music_play
+
+					player_check_collision(player1,player2)
+					player_check_collision(player2,player1)
+
+					jal music_play
+
+					player_get_info(player1,PLAYER_HP,$t0)
+					beqz $t0, g_loopo
+					player_get_info(player2,PLAYER_HP,$t0)
+					beqz $t0, g_loopo
 
 					jal music_play
 

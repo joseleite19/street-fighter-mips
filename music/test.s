@@ -30,6 +30,8 @@ SOUND:
 	jal SLEEP
 .end_macro
 SLEEP:
+#	mul $a0, $a0, 7
+#	div $a0, $a0, 5
 	li $v0, 32	#syscall for sleep
 	syscall
 	jr $ra

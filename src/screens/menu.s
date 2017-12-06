@@ -17,11 +17,6 @@ screen_menu: fill_scr(RED)# Preenche a tela de vermelho
 	read_file($s0,buffer3,80000)
 	close_file($s0)
 
-	print_hexa(VGA)
-	print_hexa(VGAend)
-	print_hexa(_VGA)
-	print_hexa(_VGAend)
-
 	li $s0, 0
 	main_loopb:
 		beq $s0, 0,img1#'start' selecionado
